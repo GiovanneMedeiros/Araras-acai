@@ -5,13 +5,19 @@ import ClientList from "../components/Clientlist.jsx"
 import DashboardCards from "../components/DashboardCards.jsx"
 import PurchaseForm from "../components/PurchaseForm.jsx"
 import RedeemRewardModal from "../components/ui/RedeemRewardModal.jsx"
+import ConfirmDialog from "../components/ui/ConfirmDialog.jsx"
 import ToastContainer from "../components/ui/ToastContainer.jsx"
 import {
   BUSINESS_WHATSAPP,
   REWARD_COST,
 } from "../constants/loyalty.js"
 import { useAuth } from "../hooks/useAuth.jsx"
-import { createClientRecord, listClientsWithDetails } from "../services/clientsService.js"
+import { useThemeMode } from "../hooks/useThemeMode.jsx"
+import {
+  createClientRecord,
+  deleteClientById,
+  listClientsWithDetails,
+} from "../services/clientsService.js"
 import { registerPurchaseForClient } from "../services/purchasesService.js"
 import {
   getRedemptionsMetrics,
@@ -25,10 +31,12 @@ import logoAraras from "../assets/logo-araras.png"
 
 function AdminPortal() {
   const { signOut } = useAuth()
+  const { isDark, toggleTheme } = useThemeMode()
   const navigate = useNavigate()
   const [clients, setClients] = useState([])
   const [toasts, setToasts] = useState([])
   const [redeemTarget, setRedeemTarget] = useState(null)
+  const [deleteTarget, setDeleteTarget] = useState(null)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [loading, setLoading] = useState(true)
   const [screenError, setScreenError] = useState("")
@@ -224,6 +232,32 @@ function AdminPortal() {
     }
   }
 
+  function handleRequestDeleteClient(client) {
+    setDeleteTarget(client)
+  }
+
+  async function handleConfirmDeleteClient() {
+    if (!deleteTarget?.id) return
+
+    try {
+      const targetName = deleteTarget.name
+      await deleteClientById(deleteTarget.id)
+      setDeleteTarget(null)
+      await Promise.all([fetchClients(), fetchRedemptionsMetrics()])
+
+      pushToast(
+        "Cliente excluido com sucesso",
+        `${targetName} e seus registros relacionados foram removidos.`
+      )
+    } catch (error) {
+      pushToast(
+        "Nao foi possivel excluir o cliente",
+        getUserFriendlyErrorMessage(error),
+        "error"
+      )
+    }
+  }
+
   const summary = useMemo(() => {
     const totalClients = clients.length
     const totalPoints = clients.reduce((acc, client) => acc + client.points, 0)
@@ -276,49 +310,57 @@ function AdminPortal() {
   }
 
   return (
-    <div className="min-h-screen bg-[linear-gradient(135deg,#240540_0%,#3f1263_48%,#5e1f7a_100%)] text-white">
+    <div className={`relative min-h-screen ${isDark ? "bg-[#171321] text-[#EDE7FA]" : "bg-[#F6F3EF] text-[#2B2B2B]"}`}>
       <div className="pointer-events-none fixed inset-0 tropical-bg" />
 
       <div className="relative mx-auto max-w-7xl px-4 py-5 md:px-6 md:py-7">
-        <header className="mb-8 rounded-3xl border border-white/15 bg-gradient-to-r from-violet-950/90 via-violet-900/85 to-fuchsia-900/80 px-4 py-4 shadow-2xl backdrop-blur-xl md:px-6 md:py-5">
-          <div className="flex items-start justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <div className="rounded-2xl bg-white/10 p-2 shadow-lg ring-1 ring-white/15">
+        <header className={`mb-10 rounded-2xl border px-5 py-5 text-white shadow-sm md:px-7 md:py-6 ${isDark ? "border-[#3C3155] bg-gradient-to-r from-[#3C2458] to-[#5A3A82]" : "border-[#D8D0E8] bg-gradient-to-r from-[#5B2A86] to-[#7A4FB3]"}`}>
+          <div className="flex items-start justify-between gap-6">
+            <div className="flex min-w-0 flex-1 items-center gap-3 pr-2">
+              <div>
                 <img
                   src={logoAraras}
                   alt="Logo Arara's Acai"
-                  className="h-16 w-auto max-w-[12rem] object-contain sm:h-20 sm:max-w-[14rem]"
+                  className="h-[5rem] w-auto max-w-[13rem] object-contain sm:h-[5.5rem] sm:max-w-[15rem]"
                 />
               </div>
-              <div>
-                <p className="text-xs uppercase tracking-[0.2em] text-amber-200/85">
+              <div className="min-w-0">
+                <p className="text-xs uppercase tracking-[0.2em] text-white/75">
                   Sistema de Fidelidade
                 </p>
-                <h1 className="mt-1.5 text-2xl font-black leading-tight sm:text-3xl md:text-4xl">Arara's Açaí</h1>
-                <p className="mt-1.5 max-w-2xl text-sm text-violet-100/85 md:text-base">
+                <h1 className="mt-1.5 text-2xl font-black leading-tight text-white sm:text-3xl md:text-4xl">Arara's Açaí</h1>
+                <p className="mt-1.5 max-w-2xl text-sm text-white/82 md:text-base">
                   Gestão de relacionamento com clientes, pontos e recompensas em um só lugar.
                 </p>
               </div>
             </div>
 
-            <div className="flex flex-col items-end gap-2">
+            <div className="shrink-0 flex flex-col items-end gap-2">
+              <button
+                type="button"
+                onClick={toggleTheme}
+                className="light-gold-button hidden w-full items-center justify-center gap-2 whitespace-nowrap rounded-2xl border border-white/35 bg-white/85 px-4 py-2.5 text-xs font-semibold text-[#5B2A86] lg:inline-flex hover:bg-white"
+              >
+                <span aria-hidden="true">{isDark ? "☀" : "☾"}</span>
+                {isDark ? "Modo claro" : "Modo dark"}
+              </button>
               <Link
                 to="/cliente"
-                className="hidden rounded-xl border border-emerald-200/35 bg-emerald-400/20 px-3 py-2 text-xs font-semibold text-emerald-50 md:inline-flex"
+                className="light-gold-button hidden w-full items-center justify-center whitespace-nowrap rounded-2xl border border-white/35 bg-white/85 px-4 py-2.5 text-xs font-semibold text-[#5B2A86] lg:inline-flex hover:bg-white"
               >
-                Ir para a área do cliente
+                Área do cliente
               </Link>
               <button
                 type="button"
                 onClick={handleLogout}
-                className="hidden rounded-xl border border-rose-200/40 bg-rose-500/20 px-3 py-2 text-xs font-semibold text-rose-100 md:inline-flex"
+                className="light-gold-button hidden w-full items-center justify-center whitespace-nowrap rounded-2xl border border-white/35 bg-white/85 px-4 py-2.5 text-xs font-semibold text-[#5B2A86] lg:inline-flex hover:bg-white"
               >
                 Sair do Admin
               </button>
               <button
                 type="button"
                 onClick={() => setMobileMenuOpen((prev) => !prev)}
-                className="inline-flex items-center rounded-xl border border-white/20 bg-white/10 px-3 py-2 text-xs font-semibold text-white/90 md:hidden"
+                className="light-gold-button inline-flex items-center rounded-2xl border border-white/35 bg-white/85 px-4 py-2.5 text-xs font-semibold text-[#5B2A86] lg:hidden"
                 aria-expanded={mobileMenuOpen}
                 aria-controls="mobile-nav"
               >
@@ -327,55 +369,76 @@ function AdminPortal() {
             </div>
           </div>
 
-          <nav className="mt-4 hidden flex-wrap gap-2 text-sm text-white/85 md:flex">
-            <a href="#dashboard" className="rounded-full border border-white/20 bg-white/10 px-3 py-1.5 hover:bg-white/20">
+          <nav className="mt-5 hidden flex-wrap gap-2 text-sm text-white md:flex">
+            <a href="#dashboard" className="rounded-full border border-white/35 bg-white/15 px-3 py-1.5 hover:bg-white/22">
               Dashboard
             </a>
-            <a href="#acoes" className="rounded-full border border-white/20 bg-white/10 px-3 py-1.5 hover:bg-white/20">
+            <a href="#acoes" className="rounded-full border border-white/35 bg-white/15 px-3 py-1.5 hover:bg-white/22">
               Ações
             </a>
-            <a href="#clientes" className="rounded-full border border-white/20 bg-white/10 px-3 py-1.5 hover:bg-white/20">
+            <a href="#clientes" className="rounded-full border border-white/35 bg-white/15 px-3 py-1.5 hover:bg-white/22">
               Clientes
             </a>
+            <Link to="/admin/tamanhos" className="rounded-full border border-white/18 bg-[#E8D8C3] px-3 py-1.5 text-[#6B4E2E] hover:bg-[#E2CFB7]">
+              Tamanhos de Açaí
+            </Link>
           </nav>
 
           {mobileMenuOpen ? (
-            <nav id="mobile-nav" className="mt-4 grid grid-cols-1 gap-2 md:hidden">
+            <nav id="mobile-nav" className="mt-4 grid grid-cols-1 gap-2 lg:hidden">
               <a
                 href="#dashboard"
                 onClick={handleNavigate}
-                className="rounded-xl border border-white/20 bg-white/10 px-3 py-2 text-sm font-semibold text-white/90"
+                className="rounded-2xl border border-white/35 bg-white/85 px-4 py-2.5 text-sm font-semibold text-[#5B2A86]"
               >
                 Dashboard
               </a>
               <a
                 href="#acoes"
                 onClick={handleNavigate}
-                className="rounded-xl border border-white/20 bg-white/10 px-3 py-2 text-sm font-semibold text-white/90"
+                className="rounded-2xl border border-white/35 bg-white/85 px-4 py-2.5 text-sm font-semibold text-[#5B2A86]"
               >
                 Ações
               </a>
               <a
                 href="#clientes"
                 onClick={handleNavigate}
-                className="rounded-xl border border-white/20 bg-white/10 px-3 py-2 text-sm font-semibold text-white/90"
+                className="rounded-2xl border border-white/35 bg-white/85 px-4 py-2.5 text-sm font-semibold text-[#5B2A86]"
               >
                 Clientes
               </a>
               <Link
+                to="/admin/tamanhos"
+                onClick={handleNavigate}
+                className="rounded-2xl border border-white/18 bg-[#E8D8C3] px-4 py-2.5 text-sm font-semibold text-[#6B4E2E]"
+              >
+                Tamanhos de Açaí
+              </Link>
+              <Link
                 to="/cliente"
                 onClick={handleNavigate}
-                className="rounded-xl border border-emerald-200/35 bg-emerald-500/20 px-3 py-2 text-sm font-semibold text-emerald-100"
+                className="rounded-2xl border border-white/35 bg-white/85 px-4 py-2.5 text-sm font-semibold text-[#5B2A86]"
               >
                 Área do cliente
               </Link>
+              <button
+                type="button"
+                onClick={() => {
+                  toggleTheme()
+                  handleNavigate()
+                }}
+                className="inline-flex items-center gap-2 rounded-2xl border border-white/35 bg-white/85 px-4 py-2.5 text-sm font-semibold text-[#5B2A86]"
+              >
+                <span aria-hidden="true">{isDark ? "☀" : "☾"}</span>
+                {isDark ? "Modo claro" : "Modo dark"}
+              </button>
               <button
                 type="button"
                 onClick={async () => {
                   handleNavigate()
                   await handleLogout()
                 }}
-                className="rounded-xl border border-rose-200/40 bg-rose-500/20 px-3 py-2 text-sm font-semibold text-rose-100"
+                className="rounded-2xl border border-white/35 bg-white/85 px-4 py-2.5 text-sm font-semibold text-[#5B2A86]"
               >
                 Sair do Admin
               </button>
@@ -384,31 +447,31 @@ function AdminPortal() {
         </header>
 
         {screenError ? (
-          <section className="mb-5 rounded-2xl border border-rose-300/40 bg-rose-400/10 p-4 text-sm text-rose-100">
+          <section className="mb-6 rounded-2xl border border-[#E8D0CC] bg-[#FFF8F6] p-4 text-sm text-[#9A5D52]">
             {screenError}
           </section>
         ) : null}
 
         {loading ? (
-          <section className="rounded-2xl border border-white/15 bg-white/10 p-5 text-sm font-semibold text-white/90 backdrop-blur-xl">
+          <section className={`rounded-2xl border p-6 text-sm font-semibold shadow-sm ${isDark ? "border-[#3C3155] bg-[#241D35] text-[#C3BAD9]" : "border-[#D8D0E8] bg-white text-[#6B6B6B]"}`}>
             Carregando dados do painel...
           </section>
         ) : (
-          <main className="space-y-8 md:space-y-9">
-            <section id="dashboard" className="scroll-mt-28 space-y-3">
+          <main className="space-y-10 md:space-y-12">
+            <section id="dashboard" className="scroll-mt-28 space-y-4">
               <div>
-                <h2 className="text-2xl font-bold md:text-3xl">Visão geral</h2>
-                <p className="text-sm text-white/70">
+                <h2 className={`text-2xl font-bold md:text-3xl ${isDark ? "text-[#EDE7FA]" : "text-[#2B2B2B]"}`}>Visão geral</h2>
+                <p className={`text-sm ${isDark ? "text-[#C3BAD9]" : "text-[#6B6B6B]"}`}>
                   Métricas principais do programa para leitura rápida e tomada de decisão.
                 </p>
               </div>
-              <DashboardCards summary={summary} />
+              <DashboardCards summary={summary} isDark={isDark} />
             </section>
 
-            <section id="acoes" className="scroll-mt-28 space-y-3">
+            <section id="acoes" className="scroll-mt-28 space-y-4">
               <div>
-                <h2 className="text-2xl font-bold md:text-3xl">Área de ações</h2>
-                <p className="text-sm text-white/70">
+                <h2 className={`text-2xl font-bold md:text-3xl ${isDark ? "text-[#EDE7FA]" : "text-[#2B2B2B]"}`}>Área de ações</h2>
+                <p className={`text-sm ${isDark ? "text-[#C3BAD9]" : "text-[#6B6B6B]"}`}>
                   Cadastre clientes e registre compras em blocos dedicados.
                 </p>
               </div>
@@ -422,10 +485,10 @@ function AdminPortal() {
               </div>
             </section>
 
-            <section className="rounded-3xl border border-white/15 bg-slate-950/35 p-4 shadow-xl backdrop-blur-xl md:p-5">
+            <section className={`rounded-2xl border p-5 shadow-sm md:p-6 light-gold-surface ${isDark ? "border-[#3C3155] bg-[#241D35]" : "border-[#D8D0E8] bg-white"}`}>
               <div className="flex flex-wrap items-center justify-between gap-2">
-                <h3 className="text-lg font-bold">Clientes próximos da recompensa</h3>
-                <span className="rounded-full border border-lime-300/30 bg-lime-300/10 px-2.5 py-1 text-xs text-lime-100">
+                <h3 className={`text-lg font-bold ${isDark ? "text-[#EDE7FA]" : "text-[#2B2B2B]"}`}>Clientes próximos da recompensa</h3>
+                <span className={`rounded-full px-3 py-1 text-sm ${isDark ? "border border-[#4D3A72] bg-[#2E2444] text-[#D4C8F0]" : "bg-[#E8D8C3] text-[#6B4E2E]"}`}>
                   até 3 pts
                 </span>
               </div>
@@ -433,25 +496,25 @@ function AdminPortal() {
               {urgentClients.length ? (
                 <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
                   {urgentClients.map((client) => (
-                    <li key={client.id} className="rounded-2xl border border-amber-200/20 bg-amber-200/10 px-4 py-3">
-                      <p className="font-semibold text-white">{client.name}</p>
-                      <p className="text-sm text-amber-100/90">
+                    <li key={client.id} className={`rounded-2xl border px-4 py-3 shadow-sm ${isDark ? "border-[#4A3A6D] bg-[#1F1830]" : "border-[#EADCC2] bg-[#FFFCF7]"}`}>
+                      <p className={`font-semibold ${isDark ? "text-[#EDE7FA]" : "text-[#2B2B2B]"}`}>{client.name}</p>
+                      <p className={`text-sm ${isDark ? "text-[#C3BAD9]" : "text-[#6B6B6B]"}`}>
                         Faltam {activeRewardCost - client.points} ponto(s) para resgatar.
                       </p>
                     </li>
                   ))}
                 </ul>
               ) : (
-                <p className="mt-4 rounded-2xl border border-dashed border-white/20 bg-white/5 p-3 text-sm text-white/65">
+                <p className={`mt-4 rounded-2xl border border-dashed p-4 text-sm ${isDark ? "border-[#4A3A6D] bg-[#1F1830] text-[#C3BAD9]" : "border-[#E8D8C3] bg-[#F6F3EF] text-[#6B6B6B]"}`}>
                   Nenhum cliente próximo no momento.
                 </p>
               )}
             </section>
 
-            <section id="clientes" className="scroll-mt-28 space-y-3">
+            <section id="clientes" className="scroll-mt-28 space-y-4">
               <div>
-                <h2 className="text-2xl font-bold md:text-3xl">Seção de clientes</h2>
-                <p className="text-sm text-white/70">
+                <h2 className={`text-2xl font-bold md:text-3xl ${isDark ? "text-[#EDE7FA]" : "text-[#2B2B2B]"}`}>Seção de clientes</h2>
+                <p className={`text-sm ${isDark ? "text-[#C3BAD9]" : "text-[#6B6B6B]"}`}>
                   Consulta, filtros, progresso e histórico em uma área separada e organizada.
                 </p>
               </div>
@@ -460,6 +523,8 @@ function AdminPortal() {
                 clients={clients}
                 rewardCost={activeRewardCost}
                 onRedeemReward={handleOpenRedeem}
+                onDeleteClient={handleRequestDeleteClient}
+                isDark={isDark}
               />
             </section>
           </main>
@@ -474,6 +539,15 @@ function AdminPortal() {
         toppings={toppings}
         onClose={() => setRedeemTarget(null)}
         onConfirm={handleConfirmRedeem}
+      />
+      <ConfirmDialog
+        isOpen={Boolean(deleteTarget)}
+        title="Excluir cliente"
+        description={`Tem certeza que deseja excluir ${deleteTarget?.name || "este cliente"}? Esta acao remove historico de compras e resgates.`}
+        confirmLabel="Sim, excluir"
+        cancelLabel="Cancelar"
+        onConfirm={handleConfirmDeleteClient}
+        onCancel={() => setDeleteTarget(null)}
       />
     </div>
   )

@@ -6,8 +6,8 @@ function RequireAdminAuth({ children }) {
 
   if (loading) {
     return (
-      <div className="grid min-h-screen place-items-center bg-[linear-gradient(145deg,#25053f_0%,#40115f_52%,#5f1a7a_100%)] text-white">
-        <div className="rounded-2xl border border-white/15 bg-white/10 px-5 py-4 text-sm font-semibold backdrop-blur-xl">
+      <div className="grid min-h-screen place-items-center bg-[#F6F3EF] text-[#2B2B2B]">
+        <div className="rounded-2xl border border-[#D8D0E8] bg-white px-5 py-4 text-sm font-semibold shadow-sm">
           Validando sessao administrativa...
         </div>
       </div>

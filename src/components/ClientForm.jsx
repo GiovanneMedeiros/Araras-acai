@@ -111,13 +111,13 @@ function ClientForm({ onAddClient }) {
   }
 
   return (
-    <section className="rounded-3xl border border-white/15 bg-slate-950/35 p-5 shadow-xl backdrop-blur-xl md:p-6">
+    <section className="rounded-2xl border border-[#D8D0E8] bg-white p-6 shadow-sm md:p-7">
       <div className="mb-5 flex flex-wrap items-center justify-between gap-2">
         <div>
-          <p className="text-xs uppercase tracking-[0.16em] text-emerald-100/80">Ação rápida</p>
-          <h2 className="text-xl font-bold sm:text-2xl">Novo cliente</h2>
+          <p className="text-xs uppercase tracking-[0.16em] text-[#6B6B6B]">Ação rápida</p>
+          <h2 className="text-xl font-bold text-[#2B2B2B] sm:text-2xl">Novo cliente</h2>
         </div>
-        <span className="rounded-full border border-emerald-200/30 bg-emerald-500/15 px-3 py-1 text-xs text-emerald-100">
+        <span className="rounded-full bg-[#E8D8C3] px-3 py-1 text-sm text-[#6B4E2E]">
           Cadastro e fidelidade
         </span>
       </div>
@@ -129,13 +129,13 @@ function ClientForm({ onAddClient }) {
           </div>
         )}
 
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.12em] text-white/70">
+        <div className="rounded-2xl border border-[#E8D8C3] bg-[#F6F3EF] p-5">
+          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.12em] text-[#6B6B6B]">
             Dados do cliente
           </p>
 
           <div className="space-y-1.5">
-            <label className="text-xs font-semibold uppercase tracking-[0.12em] text-white/70">
+            <label className="text-xs font-semibold uppercase tracking-[0.12em] text-[#6B6B6B]">
               Nome completo
             </label>
             <input
@@ -143,14 +143,14 @@ function ClientForm({ onAddClient }) {
               placeholder="Ex.: Juliana Nogueira"
               value={name}
               onChange={handleNameChange}
-              className={`w-full rounded-2xl border bg-white/95 px-4 py-3 text-gray-900 outline-none transition placeholder:text-gray-400 focus:shadow-[0_0_0_4px_rgba(167,139,250,0.2)] ${
-                errors.name ? "border-red-400 focus:border-red-500" : "border-white/20 focus:border-violet-500"
+              className={`w-full rounded-2xl border bg-white px-4 py-3 text-[#2B2B2B] outline-none transition placeholder:text-[#9A948D] focus:shadow-[0_0_0_4px_rgba(91,42,134,0.10)] ${
+                errors.name ? "border-red-300 focus:border-red-400" : "border-[#E8D8C3] focus:border-[#4B1E6D]"
               }`}
             />
           </div>
 
           <div className="mt-3 space-y-1.5">
-            <label className="text-xs font-semibold uppercase tracking-[0.12em] text-white/70">
+            <label className="text-xs font-semibold uppercase tracking-[0.12em] text-[#6B6B6B]">
               WhatsApp
             </label>
             <input
@@ -158,14 +158,14 @@ function ClientForm({ onAddClient }) {
               placeholder="(11) 90000-0000"
               value={phone}
               onChange={handlePhoneChange}
-              className={`w-full rounded-2xl border bg-white/95 px-4 py-3 text-gray-900 outline-none transition placeholder:text-gray-400 focus:shadow-[0_0_0_4px_rgba(167,139,250,0.2)] ${
-                errors.phone ? "border-red-400 focus:border-red-500" : "border-white/20 focus:border-violet-500"
+              className={`w-full rounded-2xl border bg-white px-4 py-3 text-[#2B2B2B] outline-none transition placeholder:text-[#9A948D] focus:shadow-[0_0_0_4px_rgba(91,42,134,0.10)] ${
+                errors.phone ? "border-red-300 focus:border-red-400" : "border-[#E8D8C3] focus:border-[#4B1E6D]"
               }`}
             />
           </div>
         </div>
 
-        <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 p-4">
+        <div className="flex items-center gap-3 rounded-2xl border border-[#E8D8C3] bg-[#F6F3EF] p-4">
           <button
             type="button"
             onClick={() => {
@@ -173,7 +173,7 @@ function ClientForm({ onAddClient }) {
               setErrors({})
             }}
             className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-              createAccount ? "bg-emerald-500" : "bg-gray-400"
+              createAccount ? "bg-[#5B2A86]" : "bg-[#D8CFC4]"
             }`}
           >
             <span
@@ -182,19 +182,19 @@ function ClientForm({ onAddClient }) {
               }`}
             />
           </button>
-          <label className="text-xs font-semibold uppercase tracking-[0.12em] text-white/70">
+          <label className="text-xs font-semibold uppercase tracking-[0.12em] text-[#6B6B6B]">
             Criar acesso à conta agora
           </label>
         </div>
 
         {createAccount && (
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.12em] text-white/70">
+          <div className="rounded-2xl border border-[#E8D8C3] bg-[#F6F3EF] p-5">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.12em] text-[#6B6B6B]">
               Dados de acesso
             </p>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-semibold uppercase tracking-[0.12em] text-white/70">
+              <label className="text-xs font-semibold uppercase tracking-[0.12em] text-[#6B6B6B]">
                 E-mail
               </label>
               <input
@@ -202,14 +202,14 @@ function ClientForm({ onAddClient }) {
                 placeholder="cliente@email.com"
                 value={email}
                 onChange={handleEmailChange}
-                className={`w-full rounded-2xl border bg-white/95 px-4 py-3 text-gray-900 outline-none transition placeholder:text-gray-400 focus:shadow-[0_0_0_4px_rgba(167,139,250,0.2)] ${
-                  errors.email ? "border-red-400 focus:border-red-500" : "border-white/20 focus:border-violet-500"
+                className={`w-full rounded-2xl border bg-white px-4 py-3 text-[#2B2B2B] outline-none transition placeholder:text-[#9A948D] focus:shadow-[0_0_0_4px_rgba(91,42,134,0.10)] ${
+                  errors.email ? "border-red-300 focus:border-red-400" : "border-[#E8D8C3] focus:border-[#4B1E6D]"
                 }`}
               />
             </div>
 
             <div className="mt-3 space-y-1.5">
-              <label className="text-xs font-semibold uppercase tracking-[0.12em] text-white/70">
+              <label className="text-xs font-semibold uppercase tracking-[0.12em] text-[#6B6B6B]">
                 Senha
               </label>
               <input
@@ -217,8 +217,8 @@ function ClientForm({ onAddClient }) {
                 placeholder="Mínimo de 6 caracteres"
                 value={password}
                 onChange={handlePasswordChange}
-                className={`w-full rounded-2xl border bg-white/95 px-4 py-3 text-gray-900 outline-none transition placeholder:text-gray-400 focus:shadow-[0_0_0_4px_rgba(167,139,250,0.2)] ${
-                  errors.password ? "border-red-400 focus:border-red-500" : "border-white/20 focus:border-violet-500"
+                className={`w-full rounded-2xl border bg-white px-4 py-3 text-[#2B2B2B] outline-none transition placeholder:text-[#9A948D] focus:shadow-[0_0_0_4px_rgba(91,42,134,0.10)] ${
+                  errors.password ? "border-red-300 focus:border-red-400" : "border-[#E8D8C3] focus:border-[#4B1E6D]"
                 }`}
               />
             </div>
@@ -227,13 +227,13 @@ function ClientForm({ onAddClient }) {
 
         <button
           type="submit"
-          className="w-full rounded-2xl bg-gradient-to-r from-emerald-500 to-lime-400 px-6 py-3 font-semibold text-slate-950 shadow-lg transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
+          className="w-full rounded-2xl bg-[#5B2A86] px-6 py-3 font-semibold text-white shadow-sm transition hover:bg-[#6D3EA2] disabled:cursor-not-allowed disabled:opacity-60"
         >
           {createAccount ? "Cadastrar cliente com acesso" : "Cadastrar cliente"}
         </button>
       </form>
 
-      <p className="mt-4 text-sm text-white/75">
+      <p className="mt-4 text-sm text-slate-500">
         {createAccount
           ? "Cliente cadastrado com acesso à conta pelo e-mail e senha informados."
           : "Cliente cadastrado já aparece na busca e pode ter acesso adicionado depois."}

@@ -4,27 +4,27 @@ function ToastContainer({ toasts, onCloseToast }) {
   function getToastStyle(type) {
     if (type === "error") {
       return {
-        border: "border-rose-300/40",
-        dot: "bg-rose-400",
-        title: "text-rose-100",
-        message: "text-rose-100/85",
+        border: "border-[#F0DDD8]",
+        dot: "bg-[#C47E72]",
+        title: "text-[#9A5D52]",
+        message: "text-[#9A5D52]",
       }
     }
 
     if (type === "warning") {
       return {
-        border: "border-amber-300/40",
-        dot: "bg-amber-300",
-        title: "text-amber-100",
-        message: "text-amber-100/85",
+        border: "border-[#EADCC2]",
+        dot: "bg-[#B89452]",
+        title: "text-[#6B4E2E]",
+        message: "text-[#6B4E2E]",
       }
     }
 
     return {
-      border: "border-emerald-300/35",
-      dot: "bg-emerald-400",
-      title: "text-emerald-100",
-      message: "text-emerald-100/85",
+      border: "border-[#E8D8C3]",
+      dot: "bg-[#5B2A86]",
+      title: "text-[#2B2B2B]",
+      message: "text-[#6B6B6B]",
     }
   }
 
@@ -36,7 +36,7 @@ function ToastContainer({ toasts, onCloseToast }) {
         return (
           <div
             key={toast.id}
-            className={`animate-slide-in rounded-2xl border bg-slate-950/90 p-4 text-sm shadow-2xl backdrop-blur-xl ${style.border}`}
+            className={`animate-slide-in rounded-2xl border bg-[#FBF8F5] p-4 text-sm text-[#2B2B2B] shadow-sm ${style.border}`}
           >
             <div className="flex items-start gap-3">
               <span className={`mt-1 inline-flex h-2.5 w-2.5 rounded-full ${style.dot}`} />
@@ -47,7 +47,7 @@ function ToastContainer({ toasts, onCloseToast }) {
               <button
                 type="button"
                 onClick={() => onCloseToast(toast.id)}
-                className="rounded-lg px-2 py-1 text-white/70 transition hover:bg-white/10 hover:text-white"
+                className="rounded-lg px-2 py-1 text-[#9A948D] transition hover:bg-[#F5F2EE] hover:text-[#2B2B2B]"
                 aria-label="Fechar notificação"
               >
                 x

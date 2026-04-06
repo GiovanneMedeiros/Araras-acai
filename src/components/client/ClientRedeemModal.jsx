@@ -69,27 +69,27 @@ function ClientRedeemModal({
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 z-40 grid place-items-end bg-slate-950/45 p-3 backdrop-blur-sm sm:place-items-center">
-      <div className="max-h-[92vh] w-full max-w-md overflow-y-auto rounded-t-[2rem] border border-white/20 bg-white p-5 text-slate-900 shadow-2xl sm:rounded-[2rem]">
+    <div className="fixed inset-0 z-40 grid place-items-end bg-[#2B2B2B]/20 p-3 backdrop-blur-sm sm:place-items-center">
+      <div className="max-h-[92vh] w-full max-w-md overflow-y-auto rounded-t-[2rem] border border-[#E6DFF0] bg-white p-5 text-[#2B2B2B] shadow-sm sm:rounded-2xl">
 
         <div className="mb-3">
-          <p className="text-xs uppercase tracking-[0.14em] text-fuchsia-700">Resgate</p>
-          <h3 className="font-['Baloo_2'] text-3xl leading-tight text-fuchsia-950">Monte seu açaí</h3>
-          <p className="text-sm text-slate-600">Cliente: {clientName}</p>
+          <p className="text-xs uppercase tracking-[0.14em] text-[#6B6B6B]">Resgate</p>
+          <h3 className="font-['Baloo_2'] text-3xl leading-tight text-[#2B2B2B]">Monte seu açaí</h3>
+          <p className="text-sm text-[#6B6B6B]">Cliente: {clientName}</p>
         </div>
 
         <div className="mb-4 space-y-2">
-          <p className="text-xs font-semibold uppercase tracking-[0.1em] text-fuchsia-700">Escolha o copo</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.1em] text-[#6B6B6B]">Escolha o copo</p>
           {rewardOptions.map((option) => (
             <label
               key={option.id}
               className={`flex cursor-pointer items-center justify-between rounded-xl border px-3 py-2 transition-colors ${
                 selectedOptionId === option.id
-                  ? "border-fuchsia-400 bg-fuchsia-50"
-                  : "border-slate-200 hover:border-fuchsia-200"
+                  ? "border-[#D4C0AE] bg-[#F6F3EF]"
+                  : "border-[#E6DFF0] bg-white hover:bg-[#F6F3EF]"
               }`}
             >
-              <span className="flex items-center gap-2 text-sm font-semibold text-slate-800">
+              <span className="flex items-center gap-2 text-sm font-semibold text-[#2B2B2B]">
                 <input
                   type="radio"
                   name="reward-option-client"
@@ -99,17 +99,17 @@ function ClientRedeemModal({
                     setSelectedOptionId(event.target.value)
                     setSelectionError("")
                   }}
-                  className="h-4 w-4 accent-fuchsia-600"
+                  className="h-4 w-4 accent-[#4B1E6D]"
                 />
                 {option.label}
               </span>
-              <span className="text-right text-xs font-bold text-fuchsia-800">
+              <span className="text-right text-xs font-bold text-[#6B6B6B]">
                 {option.points} pts · até {option.free_toppings_limit} grátis
               </span>
             </label>
           ))}
           {selectionError ? (
-            <p className="rounded-xl border border-rose-200 bg-rose-50 px-3 py-2 text-sm font-medium text-rose-700">
+            <p className="rounded-xl border border-[#F0DDD8] bg-[#FFF8F6] px-3 py-2 text-sm font-medium text-[#9A5D52]">
               {selectionError}
             </p>
           ) : null}
@@ -118,26 +118,26 @@ function ClientRedeemModal({
         {freeToppings.length > 0 ? (
           <div className="mb-4">
             <div className="mb-2 flex items-center justify-between gap-2">
-              <p className="text-xs font-semibold uppercase tracking-[0.1em] text-fuchsia-700">
+              <p className="text-xs font-semibold uppercase tracking-[0.1em] text-[#6B6B6B]">
                 Complementos grátis
               </p>
               {selectedOption ? (
                 <span
                   className={`rounded-full px-2.5 py-0.5 text-xs font-bold ${
                     freeToppingsChosen > limit
-                      ? "bg-rose-100 text-rose-700"
-                      : "bg-fuchsia-100 text-fuchsia-700"
+                      ? "bg-[#FFF1ED] text-[#9A5D52]"
+                      : "bg-[#E8D8C3] text-[#6B4E2E]"
                   }`}
                 >
                   {freeToppingsChosen}/{limit}
                   {freeToppingsChosen > limit ? ` (+${extraFree} × R$2,00)` : " grátis"}
                 </span>
               ) : (
-                <span className="text-xs text-slate-400">Selecione o tamanho</span>
+                <span className="text-xs text-[#9A948D]">Selecione o tamanho</span>
               )}
             </div>
             {selectedOption ? (
-              <p className="mb-2 text-xs text-slate-500">
+              <p className="mb-2 text-xs text-[#6B6B6B]">
                 Você pode escolher até {limit} complemento(s) grátis. Excedentes custam R$2,00 cada.
               </p>
             ) : null}
@@ -149,17 +149,17 @@ function ClientRedeemModal({
                     key={topping.id}
                     className={`flex cursor-pointer items-center gap-2 rounded-xl border px-3 py-2 transition-colors ${
                       checked
-                        ? "border-fuchsia-400 bg-fuchsia-50"
-                        : "border-slate-200 hover:border-fuchsia-200"
+                        ? "border-[#D4C0AE] bg-[#F6F3EF]"
+                        : "border-[#E6DFF0] bg-white hover:bg-[#F6F3EF]"
                     }`}
                   >
                     <input
                       type="checkbox"
                       checked={checked}
                       onChange={() => handleToggle(topping)}
-                      className="h-4 w-4 shrink-0 accent-fuchsia-600"
+                      className="h-4 w-4 shrink-0 accent-[#4B1E6D]"
                     />
-                    <span className="text-sm text-slate-800">{topping.name}</span>
+                    <span className="text-sm text-[#2B2B2B]">{topping.name}</span>
                   </label>
                 )
               })}
@@ -169,7 +169,7 @@ function ClientRedeemModal({
 
         {paidToppings.length > 0 ? (
           <div className="mb-4">
-            <p className="mb-2 text-xs font-semibold uppercase tracking-[0.1em] text-amber-700">
+            <p className="mb-2 text-xs font-semibold uppercase tracking-[0.1em] text-[#6B6B6B]">
               Adicionais pagos
             </p>
             <div className="grid grid-cols-2 gap-2">
@@ -180,8 +180,8 @@ function ClientRedeemModal({
                     key={topping.id}
                     className={`flex cursor-pointer items-center justify-between gap-1 rounded-xl border px-3 py-2 transition-colors ${
                       checked
-                        ? "border-amber-400 bg-amber-50"
-                        : "border-slate-200 hover:border-amber-200"
+                        ? "border-[#E8D8C3] bg-[#F6EFE7]"
+                          : "border-[#E6DFF0] bg-white hover:bg-[#F6F3EF]"
                     }`}
                   >
                     <span className="flex items-center gap-2">
@@ -189,11 +189,11 @@ function ClientRedeemModal({
                         type="checkbox"
                         checked={checked}
                         onChange={() => handleToggle(topping)}
-                        className="h-4 w-4 shrink-0 accent-amber-600"
+                        className="h-4 w-4 shrink-0 accent-[#6B4E2E]"
                       />
-                      <span className="text-sm text-slate-800">{topping.name}</span>
+                      <span className="text-sm text-[#2B2B2B]">{topping.name}</span>
                     </span>
-                    <span className="shrink-0 text-xs font-bold text-amber-700">
+                    <span className="shrink-0 text-xs font-bold text-[#6B4E2E]">
                       +{formatCurrency(topping.price)}
                     </span>
                   </label>
@@ -203,29 +203,29 @@ function ClientRedeemModal({
           </div>
         ) : null}
 
-        <div className="mb-4 rounded-xl bg-fuchsia-50 px-3 py-3">
-          <p className="text-xs uppercase tracking-[0.12em] text-fuchsia-600">Total adicional</p>
+        <div className="mb-4 rounded-xl border border-[#E8D8C3] bg-[#F6F3EF] px-3 py-3">
+          <p className="text-xs uppercase tracking-[0.12em] text-[#6B6B6B]">Total adicional</p>
           {extraFree > 0 ? (
-            <p className="mt-0.5 text-xs text-fuchsia-500">
+            <p className="mt-0.5 text-xs text-[#6B6B6B]">
               {extraFree} excedente(s) × R$2,00 = {formatCurrency(extraFreeTotal)}
               {paidToppingsTotal > 0 ? ` + pagos ${formatCurrency(paidToppingsTotal)}` : ""}
             </p>
           ) : null}
-          <p className="mt-1 text-xl font-black text-fuchsia-900">{formatCurrency(additionalTotal)}</p>
+          <p className="mt-1 text-xl font-black text-[#2B2B2B]">{formatCurrency(additionalTotal)}</p>
         </div>
 
         <div className="grid grid-cols-2 gap-2">
           <button
             type="button"
             onClick={handleClose}
-            className="rounded-xl border border-slate-200 px-3 py-2.5 text-sm font-semibold text-slate-700"
+            className="rounded-xl border border-[#E8D8C3] bg-[#F6F3EF] px-3 py-2.5 text-sm font-semibold text-[#6B6B6B]"
           >
             Voltar
           </button>
           <button
             type="button"
             onClick={handleSubmit}
-            className="rounded-xl bg-gradient-to-r from-fuchsia-600 to-pink-500 px-3 py-2.5 text-sm font-bold text-white"
+            className="rounded-xl bg-[#5B2A86] px-3 py-2.5 text-sm font-bold text-white hover:bg-[#6D3EA2]"
           >
             Enviar no WhatsApp
           </button>

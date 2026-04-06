@@ -1,42 +1,48 @@
 import { formatCurrency } from "../utils/format.js"
 
-function DashboardCards({ summary }) {
+function DashboardCards({ summary, isDark = false }) {
   const cards = [
     {
       label: "Total de clientes",
       value: summary.totalClients,
       subtitle: "Clientes cadastrados no programa.",
-      tone: "border-violet-200/25 bg-violet-300/10",
+      tone: isDark ? "border-[#3C3155] bg-[#241D35] text-[#EDE7FA]" : "border-[#E6DFF0] bg-white text-[#2B2B2B]",
+      muted: isDark ? "text-[#C3BAD9]" : "text-[#6B6B6B]",
     },
     {
       label: "Total de pontos",
       value: summary.totalPoints,
       subtitle: "Pontuação total acumulada na base.",
-      tone: "border-amber-200/25 bg-amber-300/10",
+      tone: isDark ? "border-[#3C3155] bg-[#241D35] text-[#EDE7FA]" : "border-[#E6DFF0] bg-white text-[#2B2B2B]",
+      muted: isDark ? "text-[#C3BAD9]" : "text-[#6B6B6B]",
     },
     {
       label: "Total gasto",
       value: formatCurrency(summary.totalSpent),
       subtitle: "Valor total gasto pelos clientes.",
-      tone: "border-emerald-200/25 bg-emerald-400/10",
+      tone: isDark ? "border-[#3C3155] bg-[#241D35] text-[#EDE7FA]" : "border-[#E6DFF0] bg-white text-[#2B2B2B]",
+      muted: isDark ? "text-[#C3BAD9]" : "text-[#6B6B6B]",
     },
     {
       label: "Total de açaís resgatados",
       value: summary.totalResgatados,
       subtitle: "Quantidade total de resgates realizados no programa.",
-      tone: "border-cyan-200/25 bg-cyan-300/10",
+      tone: isDark ? "border-[#3C3155] bg-[#241D35] text-[#EDE7FA]" : "border-[#E6DFF0] bg-white text-[#2B2B2B]",
+      muted: isDark ? "text-[#C3BAD9]" : "text-[#6B6B6B]",
     },
     {
       label: "Açaí mais resgatado",
       value: summary.acaiMaisResgatado || "Nenhum resgate",
       subtitle: "Tamanho mais resgatado no programa.",
-      tone: "border-rose-200/25 bg-rose-300/10",
+      tone: isDark ? "border-[#3C3155] bg-[#241D35] text-[#EDE7FA]" : "border-[#E6DFF0] bg-white text-[#2B2B2B]",
+      muted: isDark ? "text-[#C3BAD9]" : "text-[#6B6B6B]",
     },
     {
       label: "Cliente destaque",
       value: summary.topClient ? summary.topClient.name : "Sem dados",
       subtitle: "Cliente com maior pontuação atual.",
-      tone: "border-fuchsia-200/25 bg-fuchsia-300/10",
+      tone: isDark ? "border-[#3C3155] bg-[#241D35] text-[#EDE7FA]" : "border-[#E6DFF0] bg-white text-[#2B2B2B]",
+      muted: isDark ? "text-[#C3BAD9]" : "text-[#6B6B6B]",
     },
   ]
 
@@ -45,11 +51,11 @@ function DashboardCards({ summary }) {
       {cards.map((card) => (
         <article
           key={card.label}
-          className={`flex min-h-40 flex-col justify-between rounded-3xl border p-5 shadow-xl backdrop-blur-xl ${card.tone}`}
+          className={`flex min-h-44 flex-col justify-between rounded-2xl border p-6 shadow-sm light-gold-surface ${card.tone}`}
         >
-          <p className="text-sm text-white/75">{card.label}</p>
-          <h3 className="mt-3 text-2xl font-black leading-tight md:text-3xl">{card.value}</h3>
-          <p className="mt-4 text-xs text-white/60">{card.subtitle}</p>
+          <p className={`text-sm ${card.muted}`}>{card.label}</p>
+          <h3 className={`mt-3 text-2xl font-black leading-tight md:text-3xl ${isDark ? "text-[#EDE7FA]" : "text-[#2B2B2B]"}`}>{card.value}</h3>
+          <p className={`mt-4 text-xs ${card.muted}`}>{card.subtitle}</p>
         </article>
       ))}
     </section>

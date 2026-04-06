@@ -625,6 +625,24 @@ export async function updateClientRecord(clientId, { name, phone }) {
   }
 }
 
+export async function deleteClientById(clientId) {
+  assertSupabaseConfigured()
+
+  const cleanClientId = String(clientId || "").trim()
+  if (!cleanClientId) {
+    throw new Error("Cliente invalido para exclusao.")
+  }
+
+  const { error } = await supabase
+    .from(CLIENTS_TABLE)
+    .delete()
+    .eq("id", cleanClientId)
+
+  if (error) {
+    throw new Error(error.message || "Nao foi possivel excluir o cliente.")
+  }
+}
+
 export async function createOrLinkClientWithEmail({ name, phone, email, password }) {
   assertSupabaseConfigured()
 

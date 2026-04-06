@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react"
 import { formatCurrency, formatDate, normalizeText } from "../utils/format.js"
 
-function ClientList({ clients, onRedeemReward, rewardCost }) {
+function ClientList({ clients, onRedeemReward, onDeleteClient, rewardCost, isDark = false }) {
   const [search, setSearch] = useState("")
   const [filter, setFilter] = useState("all")
 
@@ -31,25 +31,25 @@ function ClientList({ clients, onRedeemReward, rewardCost }) {
   ]
 
   return (
-    <section className="rounded-3xl border border-white/15 bg-slate-950/35 p-6 shadow-xl backdrop-blur-xl">
+    <section className={`rounded-2xl border p-6 shadow-sm light-gold-surface ${isDark ? "border-[#3C3155] bg-[#241D35]" : "border-[#E6DFF0] bg-white"}`}>
       <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
         <div>
-          <p className="text-xs uppercase tracking-[0.16em] text-violet-100/75">Operação diária</p>
-          <h2 className="text-2xl font-bold md:text-3xl">Clientes e recompensas</h2>
+          <p className={`text-xs uppercase tracking-[0.16em] ${isDark ? "text-[#C3BAD9]" : "text-[#6B6B6B]"}`}>Operação diária</p>
+          <h2 className={`text-2xl font-bold md:text-3xl ${isDark ? "text-[#EDE7FA]" : "text-[#2B2B2B]"}`}>Clientes e recompensas</h2>
         </div>
-        <span className="rounded-full border border-violet-200/30 bg-violet-300/20 px-3 py-1 text-sm text-violet-100">
+        <span className={`rounded-full border px-3 py-1 text-sm ${isDark ? "border-[#4D3A72] bg-[#2E2444] text-[#D4C8F0]" : "border-[#D6C7F3] bg-[#F3EDF9] text-[#5B2A86]"}`}>
           {clients.length} na base
         </span>
       </div>
 
       <div className="mb-5 grid grid-cols-1 gap-3 lg:grid-cols-[minmax(0,1fr)_auto]">
-        <div className="rounded-2xl border border-white/15 bg-white/10 p-1.5">
+        <div className={`rounded-2xl border p-1.5 light-gold-surface ${isDark ? "border-[#3C3155] bg-[#1F1830]" : "border-[#E6DFF0] bg-white"}`}>
           <input
             type="text"
             value={search}
             onChange={(event) => setSearch(event.target.value)}
             placeholder="Buscar por nome ou telefone"
-            className="w-full rounded-xl bg-transparent px-3 py-2.5 text-white outline-none placeholder:text-white/50"
+            className={`w-full rounded-xl bg-transparent px-3 py-2.5 outline-none placeholder:text-[#9A948D] ${isDark ? "text-[#EDE7FA]" : "text-[#2B2B2B]"}`}
           />
         </div>
 
@@ -59,10 +59,12 @@ function ClientList({ clients, onRedeemReward, rewardCost }) {
               key={item.id}
               type="button"
               onClick={() => setFilter(item.id)}
-              className={`rounded-full px-3 py-2.5 text-xs font-semibold transition sm:text-sm lg:text-xs ${
+              className={`light-gold-button rounded-full px-3 py-2.5 text-xs font-semibold transition sm:text-sm lg:text-xs ${
                 filter === item.id
-                  ? "bg-amber-300 text-slate-900"
-                  : "border border-white/20 bg-white/10 text-white"
+                  ? "bg-[#5B2A86] text-white"
+                  : isDark
+                    ? "border border-[#3C3155] bg-[#1F1830] text-[#C3BAD9]"
+                    : "border border-[#E6DFF0] bg-white text-[#6B6B6B]"
               }`}
             >
               {item.label}
@@ -72,9 +74,9 @@ function ClientList({ clients, onRedeemReward, rewardCost }) {
       </div>
 
       {!filteredClients.length ? (
-        <div className="rounded-2xl border border-dashed border-white/25 bg-white/5 p-8 text-center">
-          <h3 className="text-lg font-bold">Nenhum resultado por aqui</h3>
-          <p className="mt-2 text-sm text-white/70">
+        <div className={`rounded-2xl border border-dashed p-8 text-center light-gold-surface ${isDark ? "border-[#3C3155] bg-[#1F1830]" : "border-[#E6DFF0] bg-white"}`}>
+          <h3 className={`text-lg font-bold ${isDark ? "text-[#EDE7FA]" : "text-[#2B2B2B]"}`}>Nenhum resultado por aqui</h3>
+          <p className={`mt-2 text-sm ${isDark ? "text-[#C3BAD9]" : "text-[#6B6B6B]"}`}>
             Ajuste os filtros ou revise a busca para encontrar o cliente.
           </p>
         </div>
@@ -91,25 +93,25 @@ function ClientList({ clients, onRedeemReward, rewardCost }) {
           return (
             <div
               key={client.id}
-              className={`rounded-2xl border p-5 shadow-lg transition hover:-translate-y-1 ${
+              className={`rounded-2xl border p-6 shadow-sm transition hover:-translate-y-1 light-gold-surface ${
                 isVip
-                  ? "border-amber-200/35 bg-gradient-to-br from-amber-300/15 via-slate-950/35 to-emerald-400/10"
-                  : "border-white/15 bg-white/[0.06]"
+                  ? isDark ? "border-[#4D3A72] bg-[#2E2444]" : "border-[#D6C7F3] bg-[#F3EDF9]"
+                  : isDark ? "border-[#3C3155] bg-[#241D35]" : "border-[#E6DFF0] bg-white"
               }`}
             >
               <div className="flex items-start justify-between gap-2">
                 <div>
-                  <h3 className="text-xl font-bold">{client.name}</h3>
-                  <p className="mt-1 text-white/70">{client.phone}</p>
+                  <h3 className={`text-xl font-bold ${isDark ? "text-[#EDE7FA]" : "text-[#2B2B2B]"}`}>{client.name}</h3>
+                  <p className={`mt-1 ${isDark ? "text-[#C3BAD9]" : "text-[#6B6B6B]"}`}>{client.phone}</p>
                 </div>
                 <div className="flex max-w-[48%] flex-col items-end gap-1">
                   {isVip ? (
-                    <span className="rounded-full border border-amber-200/35 bg-amber-300/25 px-2.5 py-1 text-right text-xs font-semibold text-amber-50">
+                    <span className={`rounded-full border px-3 py-1 text-right text-sm font-semibold ${isDark ? "border-[#5D4A86] bg-[#3A2D57] text-[#E0D4F8]" : "border-[#D6C7F3] bg-[#F3EDF9] text-[#5B2A86]"}`}>
                       Cliente VIP
                     </span>
                   ) : null}
                   {nearReward ? (
-                    <span className="rounded-full border border-amber-200/30 bg-amber-300/20 px-2.5 py-1 text-right text-xs font-semibold text-amber-100">
+                    <span className={`rounded-full border px-3 py-1 text-right text-sm font-semibold ${isDark ? "border-[#5D4A86] bg-[#3A2D57] text-[#E0D4F8]" : "border-[#D6C7F3] bg-[#F3EDF9] text-[#5B2A86]"}`}>
                       Faltam {pointsToReward} pts
                     </span>
                   ) : null}
@@ -118,30 +120,34 @@ function ClientList({ clients, onRedeemReward, rewardCost }) {
 
               <div className="mt-4">
                 <div className="mb-2 flex items-center justify-between text-sm">
-                  <span className="text-white/75">Progresso do resgate</span>
+                  <span className={isDark ? "text-[#C3BAD9]" : "text-[#6B6B6B]"}>Progresso do resgate</span>
                   <span>
                     {client.points}/{rewardCost}
                   </span>
                 </div>
 
-                <div className="h-3 w-full overflow-hidden rounded-full bg-white/10">
+                <div className={`h-3 w-full overflow-hidden rounded-full ${isDark ? "bg-[#3A2D57]" : "bg-[#F3EDF9]"}`}>
                   <div
-                    className="h-full rounded-full bg-gradient-to-r from-amber-300 to-lime-300 transition-all duration-500"
+                    className="h-full rounded-full bg-gradient-to-r from-[#5B2A86] to-[#7A4FB3] transition-all duration-500"
                     style={{ width: `${progress}%` }}
                   />
                 </div>
               </div>
 
               <div className="mt-4 flex items-center justify-between">
-                <p className="text-sm text-white/80">
+                <p className={`text-sm ${isDark ? "text-[#C3BAD9]" : "text-[#6B6B6B]"}`}>
                   Total gasto: {formatCurrency(client.totalSpent)}
                 </p>
 
                 <span
                   className={`rounded-full px-3 py-1 text-sm ${
                     canRedeem
-                      ? "bg-emerald-500/20 text-emerald-200"
-                      : "bg-purple-900/60 text-white"
+                      ? isDark
+                        ? "border border-[#5D4A86] bg-[#3A2D57] text-[#E0D4F8]"
+                        : "border border-[#D6C7F3] bg-[#F3EDF9] text-[#5B2A86]"
+                      : isDark
+                        ? "bg-[#1F1830] text-[#C3BAD9]"
+                        : "bg-[#F6F3EF] text-[#6B6B6B]"
                   }`}
                 >
                   {canRedeem ? "Resgate disponível" : "Em progresso"}
@@ -151,23 +157,31 @@ function ClientList({ clients, onRedeemReward, rewardCost }) {
               <button
                 onClick={() => onRedeemReward(client.id)}
                 disabled={!canRedeem}
-                className={`mt-4 w-full rounded-2xl px-4 py-3 font-semibold transition ${
+                className={`light-gold-button mt-4 w-full rounded-2xl px-4 py-3 font-semibold transition ${
                   canRedeem
-                    ? "bg-gradient-to-r from-emerald-500 to-lime-400 text-slate-950 shadow-lg hover:brightness-110"
-                    : "bg-white/10 text-white/40 cursor-not-allowed"
+                    ? "bg-[#5B2A86] text-white shadow-sm hover:bg-[#6D3EA2]"
+                    : "bg-[#F1ECE7] text-[#A49A90] cursor-not-allowed"
                 }`}
               >
                 Resgatar recompensa
               </button>
 
-              <details className="mt-4 rounded-2xl border border-white/10 bg-slate-900/30 p-3">
-                <summary className="cursor-pointer text-sm font-semibold text-white/85 marker:text-amber-200">
+              <button
+                type="button"
+                onClick={() => onDeleteClient?.(client)}
+                className={`light-gold-button mt-2 w-full rounded-2xl border px-4 py-3 font-semibold transition ${isDark ? "border-[#6B3B4A] bg-[#321F2A] text-[#E7B7C3] hover:bg-[#3A2230]" : "border-[#F0DDD8] bg-[#FFF8F6] text-[#9A5D52] hover:bg-[#FFF1ED]"}`}
+              >
+                Excluir cliente
+              </button>
+
+              <details className={`mt-4 rounded-2xl border p-4 light-gold-surface ${isDark ? "border-[#4D3A72] bg-[#1F1830]" : "border-[#D6C7F3] bg-[#F3EDF9]"}`}>
+                <summary className={`cursor-pointer text-sm font-semibold marker:text-[#5B2A86] ${isDark ? "text-[#EDE7FA]" : "text-[#2B2B2B]"}`}>
                   Histórico do cliente
                 </summary>
 
                 <div className="mt-3 space-y-3 text-sm">
                   <div>
-                    <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-white/60">
+                    <p className={`mb-2 text-xs font-semibold uppercase tracking-wide ${isDark ? "text-[#C3BAD9]" : "text-[#6B6B6B]"}`}>
                       Compras
                     </p>
                     {client.purchaseHistory.length ? (
@@ -175,24 +189,24 @@ function ClientList({ clients, onRedeemReward, rewardCost }) {
                         {client.purchaseHistory.slice(0, 5).map((purchase) => (
                           <li
                             key={purchase.id}
-                            className="rounded-xl border border-white/10 bg-white/5 px-3 py-2"
+                            className={`rounded-xl border px-3 py-2.5 ${isDark ? "border-[#3C3155] bg-[#241D35]" : "border-[#E6DFF0] bg-white"}`}
                           >
                             <p>{formatDate(purchase.date)}</p>
-                            <p className="text-white/70">
+                            <p className={isDark ? "text-[#C3BAD9]" : "text-[#6B6B6B]"}>
                               {formatCurrency(purchase.value)} · +{purchase.points} pts
                             </p>
                           </li>
                         ))}
                       </ul>
                     ) : (
-                      <p className="rounded-xl border border-dashed border-white/20 bg-white/5 px-3 py-2 text-white/60">
+                      <p className={`rounded-xl border border-dashed px-3 py-2.5 ${isDark ? "border-[#3C3155] bg-[#241D35] text-[#C3BAD9]" : "border-[#E6DFF0] bg-white text-[#6B6B6B]"}`}>
                         Nenhuma compra registrada ainda.
                       </p>
                     )}
                   </div>
 
                   <div>
-                    <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-white/60">
+                    <p className={`mb-2 text-xs font-semibold uppercase tracking-wide ${isDark ? "text-[#C3BAD9]" : "text-[#6B6B6B]"}`}>
                       Recompensas resgatadas
                     </p>
                     {client.redeemedRewards.length ? (
@@ -200,12 +214,12 @@ function ClientList({ clients, onRedeemReward, rewardCost }) {
                         {client.redeemedRewards.slice(0, 3).map((reward) => (
                           <li
                             key={reward.id}
-                            className="rounded-xl border border-emerald-200/20 bg-emerald-500/10 px-3 py-2"
+                            className={`rounded-xl border px-3 py-2.5 ${isDark ? "border-[#3C3155] bg-[#241D35]" : "border-[#E6DFF0] bg-white"}`}
                           >
                             <p>{reward.label}</p>
-                            <p className="text-white/70">{formatDate(reward.date)}</p>
+                            <p className={isDark ? "text-[#C3BAD9]" : "text-[#6B6B6B]"}>{formatDate(reward.date)}</p>
                             {reward.addons?.length ? (
-                              <p className="text-xs text-white/65">
+                              <p className={`text-xs ${isDark ? "text-[#C3BAD9]" : "text-[#6B6B6B]"}`}>
                                 Adicionais: {reward.addons.join(", ")} ({formatCurrency(reward.additionalTotal || 0)})
                               </p>
                             ) : null}
@@ -213,7 +227,7 @@ function ClientList({ clients, onRedeemReward, rewardCost }) {
                         ))}
                       </ul>
                     ) : (
-                      <p className="rounded-xl border border-dashed border-white/20 bg-white/5 px-3 py-2 text-white/60">
+                      <p className={`rounded-xl border border-dashed px-3 py-2.5 ${isDark ? "border-[#3C3155] bg-[#241D35] text-[#C3BAD9]" : "border-[#E6DFF0] bg-white text-[#6B6B6B]"}`}>
                         Sem resgates até agora.
                       </p>
                     )}

@@ -320,11 +320,11 @@ function ClientLogin() {
   }
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_20%_10%,#ffefc0_0%,transparent_28%),radial-gradient(circle_at_80%_0%,#f4c1ff_0%,transparent_25%),linear-gradient(180deg,#27063f_0%,#390b57_52%,#210432_100%)] px-3 py-5 text-white">
+    <div className="min-h-screen bg-[#F6F3EF] px-3 py-6 text-[#2B2B2B]">
       <div className="mx-auto w-full max-w-md space-y-4">
-        <header className="rounded-[1.75rem] border border-white/15 bg-white/10 p-4 shadow-xl backdrop-blur-lg">
+        <header className="rounded-2xl border border-[#D8D0E8] bg-gradient-to-r from-[#5B2A86] to-[#7A4FB3] p-5 text-white shadow-sm">
           <div className="flex items-center gap-4">
-            <div className="rounded-2xl bg-white/10 p-2 shadow-lg ring-1 ring-white/15">
+            <div className="rounded-2xl bg-white/16 p-3 ring-1 ring-white/25">
               <img
                 src={logoAraras}
                 alt="Logo Arara's Acai"
@@ -332,29 +332,29 @@ function ClientLogin() {
               />
             </div>
             <div className="space-y-1">
-              <p className="text-[11px] uppercase tracking-[0.22em] text-amber-100/90">Área do Cliente</p>
-              <h1 className="font-['Baloo_2'] text-2xl leading-tight sm:text-3xl">Arara's Açaí</h1>
+              <p className="text-[11px] uppercase tracking-[0.22em] text-white/75">Área do Cliente</p>
+              <h1 className="font-['Baloo_2'] text-2xl leading-tight text-white sm:text-3xl">Arara's Açaí</h1>
             </div>
           </div>
-          <p className="mt-2 text-sm text-fuchsia-100/85">
+          <p className="mt-2 text-sm text-white/82">
             Entre na sua conta para acessar pontos, compras e recompensas.
           </p>
         </header>
 
-        <section className="rounded-[1.75rem] border border-white/15 bg-white/90 p-4 text-slate-900 shadow-[0_16px_70px_rgba(32,16,56,0.2)]">
-          <p className="text-xs uppercase tracking-[0.14em] text-fuchsia-700">Acesso com e-mail</p>
-          <h2 className="mt-1 font-['Baloo_2'] text-2xl text-fuchsia-950">
+        <section className="rounded-2xl border border-[#D8D0E8] bg-white p-5 text-[#2B2B2B] shadow-sm">
+          <p className="text-xs uppercase tracking-[0.14em] text-[#6B6B6B]">Acesso com e-mail</p>
+          <h2 className="mt-1 font-['Baloo_2'] text-2xl text-[#2B2B2B]">
             {authMode === "login" ? "Entrar na conta" : "Criar conta"}
           </h2>
-          <p className="mt-1 text-sm text-slate-600">
+          <p className="mt-2 text-sm text-[#6B6B6B]">
             {authMode === "login"
               ? "Faça login com e-mail e senha para acessar seus pontos e resgates."
               : "Crie sua conta para acompanhar pontos, compras e resgates."}
           </p>
 
-          <div className="relative mt-4 rounded-2xl border border-fuchsia-200/90 bg-gradient-to-r from-fuchsia-50 to-pink-50 p-1 shadow-inner shadow-fuchsia-100/70">
+          <div className="relative mt-4 rounded-2xl border border-[#D8D0E8] bg-[#F6F3EF] p-1 shadow-sm">
             <div
-              className={`pointer-events-none absolute inset-y-1 w-[calc(50%-0.25rem)] rounded-xl bg-white shadow-sm ring-1 ring-fuchsia-200/70 transition-all duration-300 ${
+              className={`pointer-events-none absolute inset-y-1 w-[calc(50%-0.25rem)] rounded-xl bg-white shadow-sm ring-1 ring-[#E6DFF0] transition-all duration-300 ${
                 authMode === "login" ? "left-1" : "left-[calc(50%+0.125rem)]"
               }`}
             />
@@ -366,8 +366,8 @@ function ClientLogin() {
                 }}
                 className={`rounded-xl px-3 py-2.5 text-sm font-extrabold transition-colors duration-200 ${
                   authMode === "login"
-                    ? "text-fuchsia-900"
-                    : "text-fuchsia-700/85 hover:text-fuchsia-900"
+                    ? "text-[#2B2B2B]"
+                    : "text-[#6B6B6B] hover:text-[#2B2B2B]"
                 }`}
                 aria-pressed={authMode === "login"}
               >
@@ -381,8 +381,8 @@ function ClientLogin() {
                 }}
                 className={`rounded-xl px-3 py-2.5 text-sm font-extrabold transition-colors duration-200 ${
                   authMode === "register"
-                    ? "text-fuchsia-900"
-                    : "text-fuchsia-700/85 hover:text-fuchsia-900"
+                    ? "text-[#2B2B2B]"
+                    : "text-[#6B6B6B] hover:text-[#2B2B2B]"
                 }`}
                 aria-pressed={authMode === "register"}
               >
@@ -402,19 +402,19 @@ function ClientLogin() {
                     setLoginEmail(event.target.value)
                     if (!resetEmail) setResetEmail(event.target.value)
                   }}
-                  className="w-full rounded-2xl border border-fuchsia-200 bg-white px-4 py-3 text-sm font-semibold text-slate-900 outline-none ring-fuchsia-300 transition focus:ring-4"
+                  className="w-full rounded-2xl border border-[#E8D8C3] bg-[#F6F3EF] px-4 py-3 text-sm font-semibold text-[#2B2B2B] outline-none transition focus:border-[#4B1E6D] focus:shadow-[0_0_0_4px_rgba(75,30,109,0.10)]"
                 />
                 <input
                   type="password"
                   placeholder="Sua senha"
                   value={loginPassword}
                   onChange={(event) => setLoginPassword(event.target.value)}
-                  className="w-full rounded-2xl border border-fuchsia-200 bg-white px-4 py-3 text-sm font-semibold text-slate-900 outline-none ring-fuchsia-300 transition focus:ring-4"
+                  className="w-full rounded-2xl border border-[#E8D8C3] bg-[#F6F3EF] px-4 py-3 text-sm font-semibold text-[#2B2B2B] outline-none transition focus:border-[#4B1E6D] focus:shadow-[0_0_0_4px_rgba(75,30,109,0.10)]"
                 />
                 <button
                   type="submit"
                   disabled={loadingEmailLogin}
-                  className="w-full rounded-2xl bg-gradient-to-r from-fuchsia-600 to-pink-500 px-4 py-3 text-sm font-bold text-white disabled:cursor-not-allowed disabled:opacity-60"
+                  className="w-full rounded-2xl bg-[#5B2A86] px-4 py-3 text-sm font-bold text-white disabled:cursor-not-allowed disabled:opacity-60 hover:bg-[#6D3EA2]"
                 >
                   {loadingEmailLogin ? "Entrando..." : "Entrar com e-mail e senha"}
                 </button>
@@ -423,17 +423,17 @@ function ClientLogin() {
               <button
                 type="button"
                 onClick={() => setForgotOpen((prev) => !prev)}
-                className="mt-2 text-xs font-semibold text-fuchsia-700 underline-offset-2 hover:underline"
+                className="mt-2 text-xs font-semibold text-[#6B6B6B] underline-offset-2 hover:text-[#2B2B2B] hover:underline"
               >
                 Esqueci minha senha
               </button>
 
               {forgotOpen ? (
-                <form onSubmit={handleForgotPassword} className="mt-3 rounded-2xl border border-fuchsia-100 bg-fuchsia-50 p-3">
-                  <p className="text-xs font-semibold uppercase tracking-[0.1em] text-fuchsia-700">
+                <form onSubmit={handleForgotPassword} className="mt-3 rounded-2xl border border-[#C9BAE9] bg-[#F3EDF9] p-4">
+                  <p className="text-xs font-semibold uppercase tracking-[0.1em] text-[#6B6B6B]">
                     Recuperar senha
                   </p>
-                  <p className="mt-1 text-xs text-fuchsia-700/80">
+                  <p className="mt-1 text-xs text-[#6B6B6B]">
                     Informe seu e-mail para receber o link de redefinição.
                   </p>
                   <input
@@ -441,12 +441,12 @@ function ClientLogin() {
                     placeholder="seuemail@exemplo.com"
                     value={resetEmail}
                     onChange={(event) => setResetEmail(event.target.value)}
-                    className="mt-2 w-full rounded-xl border border-fuchsia-200 bg-white px-3 py-2.5 text-sm font-semibold text-slate-900 outline-none ring-fuchsia-300 transition focus:ring-4"
+                    className="mt-2 w-full rounded-xl border border-[#D8D0E8] bg-white px-3 py-2.5 text-sm font-semibold text-[#2B2B2B] outline-none transition focus:border-[#5B2A86] focus:shadow-[0_0_0_4px_rgba(91,42,134,0.10)]"
                   />
                   <button
                     type="submit"
                     disabled={sendingResetEmail}
-                    className="mt-2 w-full rounded-xl bg-gradient-to-r from-fuchsia-600 to-pink-500 px-3 py-2.5 text-sm font-bold text-white disabled:cursor-not-allowed disabled:opacity-60"
+                    className="mt-2 w-full rounded-xl bg-[#5B2A86] px-3 py-2.5 text-sm font-bold text-white disabled:cursor-not-allowed disabled:opacity-60 hover:bg-[#6D3EA2]"
                   >
                     {sendingResetEmail ? "Enviando..." : "Enviar link de recuperação"}
                   </button>
@@ -462,33 +462,33 @@ function ClientLogin() {
                 placeholder="Seu nome"
                 value={registerName}
                 onChange={(event) => setRegisterName(event.target.value)}
-                className="w-full rounded-2xl border border-fuchsia-200 bg-white px-4 py-3 text-sm font-semibold text-slate-900 outline-none ring-fuchsia-300 transition focus:ring-4"
+                className="w-full rounded-2xl border border-[#E8D8C3] bg-[#F6F3EF] px-4 py-3 text-sm font-semibold text-[#2B2B2B] outline-none transition focus:border-[#4B1E6D] focus:shadow-[0_0_0_4px_rgba(75,30,109,0.10)]"
               />
               <input
                 type="tel"
                 placeholder="Seu WhatsApp"
                 value={registerPhone}
                 onChange={(event) => setRegisterPhone(formatPhoneInput(event.target.value))}
-                className="w-full rounded-2xl border border-fuchsia-200 bg-white px-4 py-3 text-sm font-semibold text-slate-900 outline-none ring-fuchsia-300 transition focus:ring-4"
+                className="w-full rounded-2xl border border-[#E8D8C3] bg-[#F6F3EF] px-4 py-3 text-sm font-semibold text-[#2B2B2B] outline-none transition focus:border-[#4B1E6D] focus:shadow-[0_0_0_4px_rgba(75,30,109,0.10)]"
               />
               <input
                 type="email"
                 placeholder="seuemail@exemplo.com"
                 value={registerEmail}
                 onChange={(event) => setRegisterEmail(event.target.value)}
-                className="w-full rounded-2xl border border-fuchsia-200 bg-white px-4 py-3 text-sm font-semibold text-slate-900 outline-none ring-fuchsia-300 transition focus:ring-4"
+                className="w-full rounded-2xl border border-[#E8D8C3] bg-[#F6F3EF] px-4 py-3 text-sm font-semibold text-[#2B2B2B] outline-none transition focus:border-[#4B1E6D] focus:shadow-[0_0_0_4px_rgba(75,30,109,0.10)]"
               />
               <input
                 type="password"
                 placeholder="Crie uma senha"
                 value={registerPassword}
                 onChange={(event) => setRegisterPassword(event.target.value)}
-                className="w-full rounded-2xl border border-fuchsia-200 bg-white px-4 py-3 text-sm font-semibold text-slate-900 outline-none ring-fuchsia-300 transition focus:ring-4"
+                className="w-full rounded-2xl border border-[#E8D8C3] bg-[#F6F3EF] px-4 py-3 text-sm font-semibold text-[#2B2B2B] outline-none transition focus:border-[#4B1E6D] focus:shadow-[0_0_0_4px_rgba(75,30,109,0.10)]"
               />
               <button
                 type="submit"
                 disabled={loadingRegister}
-                className="w-full rounded-2xl bg-gradient-to-r from-fuchsia-600 to-pink-500 px-4 py-3 text-sm font-bold text-white disabled:cursor-not-allowed disabled:opacity-60"
+                className="w-full rounded-2xl bg-[#5B2A86] px-4 py-3 text-sm font-bold text-white disabled:cursor-not-allowed disabled:opacity-60 hover:bg-[#6D3EA2]"
               >
                 {loadingRegister ? "Criando conta..." : "Criar conta"}
               </button>

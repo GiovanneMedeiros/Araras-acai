@@ -206,22 +206,22 @@ export default function UpdatePassword() {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-pink-50 via-rose-50 to-white px-4 py-10 text-slate-900">
-      <div className="mx-auto w-full max-w-md rounded-3xl border border-white/70 bg-white/95 p-6 shadow-[0_24px_65px_-25px_rgba(244,114,182,0.35)] backdrop-blur">
-        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-fuchsia-700">Recuperação de conta</p>
-        <h1 className="mt-2 text-2xl font-black leading-tight text-slate-900">Defina sua nova senha</h1>
-        <p className="mt-2 text-sm text-slate-600">
+    <main className="min-h-screen bg-[#F6F3EF] px-4 py-10 text-[#2B2B2B]">
+      <div className="mx-auto w-full max-w-md rounded-2xl border border-[#E6DFF0] bg-white p-7 shadow-sm">
+        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#6B6B6B]">Recuperação de conta</p>
+        <h1 className="mt-2 text-2xl font-black leading-tight text-[#2B2B2B]">Defina sua nova senha</h1>
+        <p className="mt-2 text-sm text-[#6B6B6B]">
           Digite sua nova senha para concluir a recuperação de acesso.
         </p>
 
         {isCheckingSession ? (
-          <div className="mt-4 rounded-2xl border border-fuchsia-100 bg-fuchsia-50 px-4 py-3 text-sm font-semibold text-fuchsia-700">
+          <div className="mt-4 rounded-2xl border border-[#E8D8C3] bg-[#F6F3EF] px-4 py-3 text-sm font-semibold text-[#6B6B6B]">
             Validando seu link de recuperação...
           </div>
         ) : null}
 
         {!isCheckingSession && !hasRecoverySession ? (
-          <div className="mt-4 rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-semibold text-rose-700">
+          <div className="mt-4 rounded-2xl border border-[#F0DDD8] bg-[#FFF8F6] px-4 py-3 text-sm font-semibold text-[#9A5D52]">
             {recoveryNotice || "Link inválido ou expirado. Solicite um novo e-mail de recuperação."}
           </div>
         ) : null}
@@ -232,26 +232,26 @@ export default function UpdatePassword() {
             placeholder="Nova senha"
             value={newPassword}
             onChange={(event) => setNewPassword(event.target.value)}
-            className="w-full rounded-2xl border border-fuchsia-200 bg-white px-4 py-3 text-sm font-semibold text-slate-900 outline-none ring-fuchsia-300 transition focus:ring-4"
+            className="w-full rounded-2xl border border-[#E8D8C3] bg-[#F6F3EF] px-4 py-3 text-sm font-semibold text-[#2B2B2B] outline-none transition focus:border-[#4B1E6D] focus:shadow-[0_0_0_4px_rgba(75,30,109,0.10)]"
           />
           <input
             type="password"
             placeholder="Confirme a nova senha"
             value={confirmPassword}
             onChange={(event) => setConfirmPassword(event.target.value)}
-            className="w-full rounded-2xl border border-fuchsia-200 bg-white px-4 py-3 text-sm font-semibold text-slate-900 outline-none ring-fuchsia-300 transition focus:ring-4"
+            className="w-full rounded-2xl border border-[#E8D8C3] bg-[#F6F3EF] px-4 py-3 text-sm font-semibold text-[#2B2B2B] outline-none transition focus:border-[#4B1E6D] focus:shadow-[0_0_0_4px_rgba(75,30,109,0.10)]"
           />
 
           <button
             type="submit"
             disabled={isSubmitting || isCheckingSession || !hasRecoverySession}
-            className="w-full rounded-2xl bg-gradient-to-r from-fuchsia-600 to-pink-500 px-4 py-3 text-sm font-bold text-white shadow-lg shadow-fuchsia-200/60 disabled:cursor-not-allowed disabled:opacity-60"
+            className="w-full rounded-2xl bg-[#5B2A86] px-4 py-3 text-sm font-bold text-white shadow-sm disabled:cursor-not-allowed disabled:opacity-60 hover:bg-[#6D3EA2]"
           >
             {isSubmitting ? "Atualizando..." : "Atualizar senha"}
           </button>
         </form>
 
-        <Link to="/cliente" className="mt-4 inline-block text-xs font-semibold text-fuchsia-700 underline-offset-2 hover:underline">
+        <Link to="/cliente" className="mt-4 inline-block text-xs font-semibold text-[#6B6B6B] underline-offset-2 hover:text-[#2B2B2B] hover:underline">
           Voltar para o portal do cliente
         </Link>
       </div>

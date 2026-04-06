@@ -3,6 +3,7 @@ import ProtectedAdminRoute from "./components/auth/ProtectedAdminRoute.jsx"
 import ProtectedClientRoute from "./components/auth/ProtectedClientRoute.jsx"
 import AdminPortal from "./pages/AdminPortal.jsx"
 import AdminLogin from "./pages/AdminLogin.jsx"
+import AdminRewardSizes from "./pages/AdminRewardSizes.jsx"
 import ClientPortal from "./pages/ClientPortal.jsx"
 import ClientLogin from "./pages/ClientLogin.jsx"
 import UpdatePassword from "./pages/UpdatePassword.jsx"
@@ -17,6 +18,14 @@ function App() {
         element={
           <ProtectedAdminRoute>
             <AdminPortal />
+          </ProtectedAdminRoute>
+        }
+      />
+      <Route
+        path="/admin/tamanhos"
+        element={
+          <ProtectedAdminRoute>
+            <AdminRewardSizes />
           </ProtectedAdminRoute>
         }
       />

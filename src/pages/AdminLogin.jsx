@@ -14,10 +14,10 @@ function AdminLogin() {
 
   if (!isSupabaseConfigured) {
     return (
-      <div className="min-h-screen bg-[radial-gradient(circle_at_12%_10%,#f7df9f_0%,transparent_22%),radial-gradient(circle_at_86%_14%,#ffc7db_0%,transparent_24%),linear-gradient(160deg,#26063f_0%,#441061_46%,#71173f_100%)] px-4 py-6 text-white">
+      <div className="min-h-screen bg-[#F6F3EF] px-4 py-6 text-[#2B2B2B]">
         <main className="mx-auto flex min-h-[92vh] w-full max-w-md items-center">
-          <section className="w-full rounded-[2rem] border border-white/20 bg-white/10 p-6 shadow-2xl backdrop-blur-xl">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-amber-200/85">
+          <section className="w-full rounded-2xl border border-[#E6DFF0] bg-white p-7 shadow-sm">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#6B6B6B]">
               Configuração obrigatória
             </p>
 
@@ -25,7 +25,7 @@ function AdminLogin() {
               Admin indisponível
             </h1>
 
-            <p className="mt-2 text-sm text-fuchsia-100/90">
+            <p className="mt-2 text-sm text-[#6B6B6B]">
               Defina VITE_SUPABASE_URL e VITE_SUPABASE_ANON_KEY no arquivo
               .env.local para liberar o login real.
             </p>
@@ -37,8 +37,8 @@ function AdminLogin() {
 
   if (loading) {
     return (
-      <div className="grid min-h-screen place-items-center bg-[linear-gradient(145deg,#25053f_0%,#40115f_52%,#5f1a7a_100%)] text-white">
-        <p className="rounded-xl border border-white/15 bg-white/10 px-4 py-3 text-sm font-semibold backdrop-blur-xl">
+      <div className="grid min-h-screen place-items-center bg-[#F6F3EF] text-[#2B2B2B]">
+        <p className="rounded-2xl border border-[#D8D0E8] bg-white px-4 py-3 text-sm font-semibold shadow-sm">
           Carregando sessão...
         </p>
       </div>
@@ -98,25 +98,25 @@ function AdminLogin() {
   }
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_12%_10%,#f7df9f_0%,transparent_22%),radial-gradient(circle_at_86%_14%,#ffc7db_0%,transparent_24%),linear-gradient(160deg,#26063f_0%,#441061_46%,#71173f_100%)] px-4 py-6 text-white">
+    <div className="min-h-screen bg-[#F6F3EF] px-4 py-6 text-[#2B2B2B]">
       <main className="mx-auto flex min-h-[92vh] w-full max-w-md items-center">
-        <section className="w-full rounded-[2rem] border border-white/20 bg-white/10 p-6 shadow-2xl backdrop-blur-xl">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-amber-200/85">
+        <section className="w-full rounded-2xl border border-[#E6DFF0] bg-white p-7 shadow-sm">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#6B6B6B]">
             Acesso Restrito
           </p>
 
-          <h1 className="mt-2 font-['Baloo_2'] text-4xl leading-tight">
+          <h1 className="mt-2 font-['Baloo_2'] text-4xl leading-tight text-[#2B2B2B]">
             Painel Admin
           </h1>
 
-          <p className="mt-1.5 text-sm text-fuchsia-100/85">
+          <p className="mt-2 text-sm text-[#6B6B6B]">
             Entre com e-mail e senha para gerenciar clientes, compras e
             recompensas.
           </p>
 
           <form onSubmit={handleAdminLogin} className="mt-6 space-y-3">
             <div>
-              <label className="mb-2 block text-xs font-semibold uppercase tracking-[0.14em] text-white/70">
+              <label className="mb-2 block text-xs font-semibold uppercase tracking-[0.14em] text-[#6B6B6B]">
                 E-mail
               </label>
 
@@ -128,14 +128,14 @@ function AdminLogin() {
                   if (error) setError("")
                 }}
                 placeholder="admin@ararasacai.com"
-                className="w-full rounded-2xl border border-white/20 bg-white/95 px-4 py-3 text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-fuchsia-500 focus:shadow-[0_0_0_4px_rgba(217,70,239,0.2)]"
+                className="w-full rounded-2xl border border-[#E8D8C3] bg-[#F6F3EF] px-4 py-3 text-[#2B2B2B] outline-none transition placeholder:text-[#9A948D] focus:border-[#4B1E6D] focus:shadow-[0_0_0_4px_rgba(75,30,109,0.10)]"
                 autoComplete="email"
                 required
               />
             </div>
 
             <div>
-              <label className="mb-2 block text-xs font-semibold uppercase tracking-[0.14em] text-white/70">
+              <label className="mb-2 block text-xs font-semibold uppercase tracking-[0.14em] text-[#6B6B6B]">
                 Senha
               </label>
 
@@ -147,7 +147,7 @@ function AdminLogin() {
                   if (error) setError("")
                 }}
                 placeholder="Digite sua senha"
-                className="w-full rounded-2xl border border-white/20 bg-white/95 px-4 py-3 text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-fuchsia-500 focus:shadow-[0_0_0_4px_rgba(217,70,239,0.2)]"
+                className="w-full rounded-2xl border border-[#E8D8C3] bg-[#F6F3EF] px-4 py-3 text-[#2B2B2B] outline-none transition placeholder:text-[#9A948D] focus:border-[#4B1E6D] focus:shadow-[0_0_0_4px_rgba(75,30,109,0.10)]"
                 autoComplete="current-password"
                 required
               />
@@ -156,19 +156,19 @@ function AdminLogin() {
             <button
               type="submit"
               disabled={submitting}
-              className="w-full rounded-2xl bg-gradient-to-r from-fuchsia-600 via-pink-500 to-amber-400 px-6 py-3 font-black text-white shadow-lg transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
+              className="w-full rounded-2xl bg-[#5B2A86] px-6 py-3 font-black text-white shadow-sm transition hover:bg-[#6D3EA2] disabled:cursor-not-allowed disabled:opacity-60"
             >
               {submitting ? "Entrando..." : "Entrar no painel"}
             </button>
           </form>
 
           {error ? (
-            <p className="mt-3 rounded-xl border border-rose-200/50 bg-rose-500/10 px-3 py-2 text-sm font-semibold text-rose-100">
+            <p className="mt-4 rounded-2xl border border-[#E8D0CC] bg-[#FFF8F6] px-4 py-3 text-sm font-semibold text-[#9A5D52]">
               {error}
             </p>
           ) : null}
 
-          <p className="mt-5 text-xs text-white/60">
+          <p className="mt-5 text-xs text-[#6B6B6B]">
             Acesso autorizado apenas para administradores cadastrados no
             Supabase.
           </p>

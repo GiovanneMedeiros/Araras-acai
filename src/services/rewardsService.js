@@ -45,9 +45,10 @@ export async function listRewardOptions() {
   assertSupabaseConfigured()
 
   const { data, error } = await supabase
-    .from(REWARD_OPTIONS_TABLE)
-    .select("id, label, points, free_toppings_limit, created_at")
-    .order("points", { ascending: true })
+    .from("reward_sizes")
+    .select("id, name, points_required, free_toppings_limit")
+    .eq("is_active", true)
+    .order("sort_order", { ascending: true })
 
   if (error) {
     throw new Error(error.message || "Erro ao buscar opcoes de recompensa.")
@@ -56,8 +57,8 @@ export async function listRewardOptions() {
   return (data || [])
     .map((row) => ({
       id: row.id,
-      label: String(row.label || "").trim(),
-      points: Number(row.points || 0),
+      label: String(row.name || "").trim(),
+      points: Number(row.points_required || 0),
       free_toppings_limit: Number(row.free_toppings_limit ?? 0),
     }))
     .filter((item) => item.id && item.label && item.points > 0)
