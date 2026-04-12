@@ -20,6 +20,7 @@ import {
 } from "../services/clientsService.js"
 import { registerPurchaseForClient } from "../services/purchasesService.js"
 import {
+  countClientRedemptions,
   getRedemptionsMetrics,
   listRewardOptions,
   listToppings,
@@ -27,6 +28,7 @@ import {
 } from "../services/rewardsService.js"
 import { getUserFriendlyErrorMessage } from "../utils/errorMessage.js"
 import { formatCurrency } from "../utils/format.js"
+import { generateWhatsAppLink, generateWhatsAppMessage } from "../utils/whatsapp.js"
 import logoAraras from "../assets/logo-araras.png"
 
 function AdminPortal() {
@@ -185,7 +187,6 @@ function AdminPortal() {
     }
 
     const addonLabels = addons.map((addon) => addon.label)
-    const addonText = addonLabels.length ? addonLabels.join(", ") : "Nenhum"
 
     try {
       await redeemClientReward({
@@ -198,23 +199,25 @@ function AdminPortal() {
 
       await Promise.all([fetchClients(), fetchRedemptionsMetrics()])
 
-      const message = [
-        "Olá, Arara's Açaí!",
-        "",
-        "Quero resgatar meu açaí grátis no programa de fidelidade.",
-        `Cliente: ${redeemTarget.name}`,
-        `Produto: ${selectedOption.label}`,
-        `Pontos usados: ${selectedOption.points}`,
-        `Complementos: ${addonText}`,
-        extraFreeCount > 0
-          ? `Excedente grátis: ${extraFreeCount} × R$2,00 = ${formatCurrency(extraFreeCount * 2)}`
-          : null,
-        `Valor dos adicionais: ${formatCurrency(additionalTotal)}`,
-        "",
-        "Pode confirmar meu pedido, por favor?",
-      ].filter(Boolean).join("\n")
+      const totalResgates = await countClientRedemptions({
+        clientId: redeemTarget.id,
+        phone: redeemTarget.phone,
+      })
 
-      const whatsappUrl = `https://wa.me/${BUSINESS_WHATSAPP}?text=${encodeURIComponent(message)}`
+      const whatsappMessage = generateWhatsAppMessage({
+        nome: redeemTarget.name,
+        telefone: redeemTarget.phone,
+        recompensa: selectedOption.label,
+        pontos: selectedOption.points,
+        totalResgates,
+        complementos: addonLabels,
+        valorAdicionais: additionalTotal,
+      })
+
+      const whatsappUrl = generateWhatsAppLink({
+        numeroLoja: BUSINESS_WHATSAPP,
+        mensagem: whatsappMessage,
+      })
 
       pushToast(
         "Resgate realizado com sucesso 🎉",

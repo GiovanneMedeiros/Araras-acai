@@ -15,11 +15,16 @@ import {
   getClientByIdWithDetails,
   linkClientByEmailToAuthUser,
 } from "../services/clientsService.js"
-import { listRewardOptions, listToppings, redeemClientReward } from "../services/rewardsService.js"
+import {
+  countClientRedemptions,
+  listRewardOptions,
+  listToppings,
+  redeemClientReward,
+} from "../services/rewardsService.js"
 import { getUserFriendlyErrorMessage } from "../utils/errorMessage.js"
-import { formatCurrency } from "../utils/format.js"
 import { useClientAuth } from "../hooks/useClientAuth.jsx"
 import { useThemeMode } from "../hooks/useThemeMode.jsx"
+import { generateWhatsAppLink, generateWhatsAppMessage } from "../utils/whatsapp.js"
 import logoAraras from "../assets/logo-araras.png"
 
 function ClientPortal() {
@@ -195,27 +200,29 @@ function ClientPortal() {
         "Seu pedido foi preparado e você foi direcionado para o WhatsApp."
       )
 
-      const addonText = addonLabels.length ? addonLabels.join(", ") : "Nenhum"
+      const totalResgates = await countClientRedemptions({
+        clientId: activeClient.id,
+        phone: activeClient.phone,
+      })
 
-      const whatsappMessage = [
-        "Olá, Arara's Açaí!",
-        "",
-        "Quero resgatar minha recompensa do clube.",
-        `Cliente: ${activeClient.name}`,
-        `Telefone: ${activeClient.phone}`,
-        `Recompensa: ${selectedOption.label}`,
-        `Pontos usados: ${selectedOption.points}`,
-        `Complementos: ${addonText}`,
-        extraFreeCount > 0
-          ? `Excedente grátis: ${extraFreeCount} × R$2,00 = ${formatCurrency(extraFreeCount * 2)}`
-          : null,
-        `Valor dos adicionais: ${formatCurrency(additionalTotal)}`,
-        "",
-        "Podem confirmar meu pedido para delivery, por favor?",
-      ].filter(Boolean).join("\n")
+      const whatsappMessage = generateWhatsAppMessage({
+        nome: activeClient.name,
+        telefone: activeClient.phone,
+        recompensa: selectedOption.label,
+        pontos: selectedOption.points,
+        totalResgates,
+        complementos: addonLabels,
+        valorAdicionais: additionalTotal,
+        extraFreeCount,
+      })
+
+      const whatsappLink = generateWhatsAppLink({
+        numeroLoja: BUSINESS_WHATSAPP,
+        mensagem: whatsappMessage,
+      })
 
       window.open(
-        `https://wa.me/${BUSINESS_WHATSAPP}?text=${encodeURIComponent(whatsappMessage)}`,
+        whatsappLink,
         "_blank",
         "noopener,noreferrer"
       )
@@ -237,8 +244,13 @@ function ClientPortal() {
       `Saldo atual: ${activeClient.points} pontos no clube.`,
     ].join("\n")
 
+    const whatsappLink = generateWhatsAppLink({
+      numeroLoja: BUSINESS_WHATSAPP,
+      mensagem: message,
+    })
+
     window.open(
-      `https://wa.me/${BUSINESS_WHATSAPP}?text=${encodeURIComponent(message)}`,
+      whatsappLink,
       "_blank",
       "noopener,noreferrer"
     )

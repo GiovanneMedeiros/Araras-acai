@@ -1,10 +1,38 @@
 import { assertSupabaseConfigured, supabase } from "../lib/supabase.js"
 import { getClientByIdWithDetails } from "./clientsService.js"
+import { normalizePhone } from "../utils/clientData.js"
 
 const CLIENTS_TABLE = "clients"
 const REDEMPTIONS_TABLE = "reward_redemptions"
 const REWARD_OPTIONS_TABLE = "reward_options"
 const TOPPINGS_TABLE = "toppings"
+
+async function resolveClientIdByPhone(phone) {
+  const digits = normalizePhone(phone)
+  if (!digits) return null
+
+  const exactDigitsQuery = await supabase
+    .from(CLIENTS_TABLE)
+    .select("id")
+    .eq("phone_digits", digits)
+    .maybeSingle()
+
+  if (!exactDigitsQuery.error && exactDigitsQuery.data?.id) {
+    return exactDigitsQuery.data.id
+  }
+
+  const exactPhoneQuery = await supabase
+    .from(CLIENTS_TABLE)
+    .select("id")
+    .eq("phone", digits)
+    .maybeSingle()
+
+  if (exactPhoneQuery.error) {
+    throw new Error(exactPhoneQuery.error.message || "Erro ao localizar cliente por telefone.")
+  }
+
+  return exactPhoneQuery.data?.id || null
+}
 
 function parseRewardCost(cost) {
   if (cost === undefined || cost === null || cost === "") {
@@ -84,6 +112,29 @@ export async function listToppings() {
     price: Number(row.price || 0),
     is_paid: Boolean(row.is_paid),
   })).filter((item) => item.id && item.name)
+}
+
+export async function countClientRedemptions({ clientId, phone }) {
+  assertSupabaseConfigured()
+
+  let targetClientId = String(clientId || "").trim()
+
+  if (!targetClientId && phone) {
+    targetClientId = await resolveClientIdByPhone(phone)
+  }
+
+  if (!targetClientId) return 0
+
+  const { count, error } = await supabase
+    .from(REDEMPTIONS_TABLE)
+    .select("id", { count: "exact", head: true })
+    .eq("client_id", targetClientId)
+
+  if (error) {
+    throw new Error(error.message || "Erro ao contar resgates do cliente.")
+  }
+
+  return Number(count || 0)
 }
 
 async function listRedemptionRowsForMetrics() {
