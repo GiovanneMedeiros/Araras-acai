@@ -320,7 +320,7 @@ function ClientLogin() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F6F3EF] px-3 py-6 text-[#2B2B2B]">
+    <div className="min-h-full bg-[#F6F3EF] px-3 py-6 text-[#2B2B2B]">
       <div className="mx-auto w-full max-w-md space-y-4">
         <header className="rounded-2xl border border-[#D8D0E8] bg-gradient-to-r from-[#5B2A86] to-[#7A4FB3] p-5 text-white shadow-sm">
           <div className="flex items-center gap-4">

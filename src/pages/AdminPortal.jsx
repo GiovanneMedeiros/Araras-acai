@@ -313,7 +313,7 @@ function AdminPortal() {
   }
 
   return (
-    <div className={`relative min-h-screen ${isDark ? "bg-[#171321] text-[#EDE7FA]" : "bg-[#F6F3EF] text-[#2B2B2B]"}`}>
+    <div className={`relative min-h-full ${isDark ? "bg-[#171321] text-[#EDE7FA]" : "bg-[#F6F3EF] text-[#2B2B2B]"}`}>
       <div className="pointer-events-none fixed inset-0 tropical-bg" />
 
       <div className="relative mx-auto max-w-7xl px-4 py-5 md:px-6 md:py-7">

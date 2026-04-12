@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Sora:wght@400;500;600;700&display=swap");
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
 :root {
 	color: #2b2b2b;
@@ -15,6 +16,10 @@ body {
 	min-height: 100vh;
 	font-family: "Sora", "Segoe UI", sans-serif;
 	background: #f6f3ef;
+}
+
+#root {
+	min-height: 100vh;
 }
 
 body.theme-dark {

@@ -280,7 +280,7 @@ function ClientPortal() {
   }
 
   return (
-    <div className={`relative min-h-screen px-3 py-6 ${isDark ? "bg-[#171321] text-[#EDE7FA]" : "bg-[#F6F3EF] text-[#2B2B2B]"}`}>
+    <div className={`relative min-h-full px-3 py-6 ${isDark ? "bg-[#171321] text-[#EDE7FA]" : "bg-[#F6F3EF] text-[#2B2B2B]"}`}>
       <div className="pointer-events-none fixed right-4 top-6 z-30 hidden md:block">
         <div className="pointer-events-auto flex w-[9rem] flex-col gap-2">
           <button

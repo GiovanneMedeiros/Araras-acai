@@ -216,7 +216,7 @@ function AdminRewardSizes() {
   ]
 
   return (
-    <div className="min-h-screen bg-[#F6F3EF] text-[#2B2B2B]">
+    <div className="min-h-full bg-[#F6F3EF] text-[#2B2B2B]">
       <div className="pointer-events-none fixed inset-0 tropical-bg" />
 
       <div className="relative mx-auto max-w-7xl px-4 py-5 md:px-6 md:py-7">

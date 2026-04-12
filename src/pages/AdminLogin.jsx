@@ -14,7 +14,7 @@ function AdminLogin() {
 
   if (!isSupabaseConfigured) {
     return (
-      <div className="min-h-screen bg-[#F6F3EF] px-4 py-6 text-[#2B2B2B]">
+      <div className="min-h-full bg-[#F6F3EF] px-4 py-6 text-[#2B2B2B]">
         <main className="mx-auto flex min-h-[92vh] w-full max-w-md items-center">
           <section className="w-full rounded-2xl border border-[#E6DFF0] bg-white p-7 shadow-sm">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#6B6B6B]">
@@ -37,7 +37,7 @@ function AdminLogin() {
 
   if (loading) {
     return (
-      <div className="grid min-h-screen place-items-center bg-[#F6F3EF] text-[#2B2B2B]">
+      <div className="grid min-h-full place-items-center bg-[#F6F3EF] text-[#2B2B2B]">
         <p className="rounded-2xl border border-[#D8D0E8] bg-white px-4 py-3 text-sm font-semibold shadow-sm">
           Carregando sessão...
         </p>
@@ -98,7 +98,7 @@ function AdminLogin() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F6F3EF] px-4 py-6 text-[#2B2B2B]">
+    <div className="min-h-full bg-[#F6F3EF] px-4 py-6 text-[#2B2B2B]">
       <main className="mx-auto flex min-h-[92vh] w-full max-w-md items-center">
         <section className="w-full rounded-2xl border border-[#E6DFF0] bg-white p-7 shadow-sm">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#6B6B6B]">

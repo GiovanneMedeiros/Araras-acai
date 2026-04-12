@@ -20,6 +20,7 @@ export function useThemeMode() {
 
     window.localStorage.setItem(THEME_STORAGE_KEY, isDark ? "dark" : "light")
     document.body.classList.toggle("theme-dark", isDark)
+    document.documentElement.classList.toggle("dark", isDark)
   }, [isDark])
 
   function toggleTheme() {

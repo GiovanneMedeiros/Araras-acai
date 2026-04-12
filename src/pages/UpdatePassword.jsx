@@ -206,7 +206,7 @@ export default function UpdatePassword() {
   }
 
   return (
-    <main className="min-h-screen bg-[#F6F3EF] px-4 py-10 text-[#2B2B2B]">
+    <main className="min-h-full bg-[#F6F3EF] px-4 py-10 text-[#2B2B2B]">
       <div className="mx-auto w-full max-w-md rounded-2xl border border-[#E6DFF0] bg-white p-7 shadow-sm">
         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#6B6B6B]">Recuperação de conta</p>
         <h1 className="mt-2 text-2xl font-black leading-tight text-[#2B2B2B]">Defina sua nova senha</h1>
