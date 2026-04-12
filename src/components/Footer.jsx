@@ -9,7 +9,7 @@ export default function Footer() {
     <footer className="relative z-10 w-full border-t border-purple-200 bg-purple-50 py-3 text-xs text-purple-900 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100">
       <div className="mx-auto flex max-w-6xl flex-col items-center justify-center gap-y-1 px-4 lg:flex-row lg:flex-wrap lg:gap-x-3 lg:gap-y-0">
 
-        <span className="font-medium">© {new Date().getFullYear()} Arara's Açaí 🍧</span>
+        <span className="font-medium">© {new Date().getFullYear()} Arara's Açaí</span>
 
         {sep}
 
@@ -51,8 +51,10 @@ export default function Footer() {
 
         {sep}
 
-        <span className="text-purple-700 dark:text-zinc-300">
-          Sistema de Fidelidade • Todos os direitos reservados
+        <span className="inline-flex items-center gap-x-3 text-purple-700 dark:text-zinc-300">
+          <span>Sistema de Fidelidade</span>
+          <span className="text-purple-400 dark:text-zinc-500">•</span>
+          <span>Todos os direitos reservados</span>
         </span>
 
       </div>
