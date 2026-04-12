@@ -198,21 +198,28 @@ function AdminPortal() {
 
       await Promise.all([fetchClients(), fetchRedemptionsMetrics()])
 
-      const message = [
-        "Olá, Arara's Açaí!",
-        "",
-        "Quero resgatar meu açaí grátis no programa de fidelidade.",
-        `Cliente: ${redeemTarget.name}`,
-        `Produto: ${selectedOption.label}`,
-        `Pontos usados: ${selectedOption.points}`,
-        `Complementos: ${addonText}`,
-        extraFreeCount > 0
-          ? `Excedente grátis: ${extraFreeCount} × R$2,00 = ${formatCurrency(extraFreeCount * 2)}`
-          : null,
-        `Valor dos adicionais: ${formatCurrency(additionalTotal)}`,
-        "",
-        "Pode confirmar meu pedido, por favor?",
-      ].filter(Boolean).join("\n")
+      const totalResgates = redeemTarget?.totalResgates ?? redeemTarget?.redeemCount ?? 0
+
+const message = [
+  "Olá, Arara's Açaí! 🍧",
+  "",
+  "Quero resgatar minha recompensa do clube! 🏆",
+  "",
+  `*Cliente:* *_${redeemTarget.name}_*`,
+  `*Telefone:* ${redeemTarget.phone}`,
+  `*Recompensa:* ${selectedOption.label}`,
+  `*Pontos usados:* ${selectedOption.points}`,
+  `*Quantidade de resgates:* ${totalResgates}`,
+  `*Complementos:* ${additionText || "Nenhum"}`,
+  extraFreeCount > 0
+    ? `*Excedente grátis:* ${extraFreeCount} x R$2,00 = ${formatCurrency(extraFreeCount * 2)}`
+    : null,
+  `*Valor dos adicionais:* ${formatCurrency(additionalTotal)}`,
+  "",
+  "Podem confirmar meu pedido para delivery, por favor? 🚀",
+]
+  .filter(Boolean)
+  .join("\n")
 
       const whatsappUrl = `https://wa.me/${BUSINESS_WHATSAPP}?text=${encodeURIComponent(message)}`
 
