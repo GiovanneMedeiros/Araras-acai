@@ -30,6 +30,24 @@ O Arara's Açaí - Sistema de Fidelidade organiza toda a jornada do cliente dent
 
 Link do projeto: [Adicionar URL de produção aqui](#)
 
+## 📸 Demonstração
+
+### Tela de Login
+
+<img width="521" height="635" alt="login" src="https://github.com/user-attachments/assets/9d068c19-5059-4cc6-ba47-0ba81b0bf28e" />
+
+### Tela do Cliente
+
+<img width="1063" height="637" alt="cliente 1" src="https://github.com/user-attachments/assets/0b66e992-1683-4a83-8c4f-be8a63ceff47" />
+<img width="1103" height="639" alt="cliente 2" src="https://github.com/user-attachments/assets/c950f9b8-add4-4839-8ba2-9bec32058510" />
+<img width="980" height="631" alt="cliente 3" src="https://github.com/user-attachments/assets/c03afb1c-0b9d-40e9-b8ce-f7cad8b01be1" />
+
+### Painel Administrativo
+
+<img width="1344" height="641" alt="1" src="https://github.com/user-attachments/assets/afa91c34-af97-4423-9f15-729f97a981f3" />
+<img width="1310" height="601" alt="2" src="https://github.com/user-attachments/assets/26746bfb-0633-4c37-b32e-73bb7f856a60" />
+<img width="1310" height="633" alt="3" src="https://github.com/user-attachments/assets/e9a6b3a9-a653-4b15-adc0-f09398d46d96" />
+
 ## Funcionalidades principais
 
 ### Área do cliente
