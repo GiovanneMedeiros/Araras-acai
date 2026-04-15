@@ -242,7 +242,7 @@ npm run lint
 
 **Giovanne Medeiros**
 
-LinkedIn: [Adicionar link do LinkedIn aqui](#)
+LinkedIn: https://www.linkedin.com/in/giovanne-medeiros/
 
 ---
 
