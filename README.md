@@ -1,254 +1,231 @@
-# Arara's Açaí | Sistema de Fidelidade
+# Arara's Açaí - Sistema de Fidelidade
 
-Aplicação web para gestão de programa de fidelidade da Arara's Açaí, com:
+Sistema web completo de fidelidade desenvolvido para uso real em uma açaíteria, conectando operação administrativa, experiência do cliente e automação de resgates em um único fluxo.
 
-- Área administrativa para cadastro e operação de clientes
-- Área do cliente com consulta de pontos e resgate de recompensas
-- Integração com Supabase (Auth, banco PostgreSQL e políticas RLS)
-- Fluxo de finalização via WhatsApp
+A aplicação foi pensada para digitalizar o acompanhamento de pontos, facilitar o relacionamento com clientes recorrentes e dar ao negócio uma base sólida para crescimento futuro. O projeto combina uma interface moderna em React com autenticação, banco de dados e regras de acesso no Supabase, além de integração com WhatsApp para tornar o resgate mais prático no dia a dia da loja.
 
 ## Sumário
 
-- [Visão geral](#visão-geral)
-- [Funcionalidades](#funcionalidades)
-- [Stack e arquitetura](#stack-e-arquitetura)
-- [Rotas da aplicação](#rotas-da-aplicação)
-- [Pré-requisitos](#pré-requisitos)
-- [Configuração local](#configuração-local)
+- [Demonstração do sistema](#demonstração-do-sistema)
+- [Funcionalidades principais](#funcionalidades-principais)
+- [Diferenciais do projeto](#diferenciais-do-projeto)
+- [Tecnologias utilizadas](#tecnologias-utilizadas)
+- [Estrutura do projeto](#estrutura-do-projeto)
+- [Como rodar localmente](#como-rodar-localmente)
+- [Variáveis de ambiente](#variáveis-de-ambiente)
 - [Configuração do Supabase](#configuração-do-supabase)
 - [Scripts disponíveis](#scripts-disponíveis)
-- [Deploy](#deploy)
-- [Segurança](#segurança)
-- [Troubleshooting](#troubleshooting)
-- [Roadmap recomendado](#roadmap-recomendado)
+- [Melhorias futuras](#melhorias-futuras)
+- [Autor](#autor)
 
-## Visão geral
+## Demonstração do sistema
 
-O projeto foi desenhado para centralizar o ciclo de fidelidade:
+O Arara's Açaí - Sistema de Fidelidade organiza toda a jornada do cliente dentro do programa de pontos:
 
-1. Admin cadastra cliente e registra compras.
-2. Sistema converte compras em pontos.
-3. Cliente acompanha saldo e histórico na área autenticada.
-4. Cliente (ou admin) registra resgate de recompensa.
-5. Pedido é direcionado para o WhatsApp com resumo do resgate.
+1. O administrador cadastra clientes ou realiza um pré-cadastro manual.
+2. Cada compra registrada gera pontuação automaticamente.
+3. O cliente acessa sua área autenticada para consultar saldo, histórico e recompensas disponíveis.
+4. Quando houver pontos suficientes, o resgate pode ser feito pela plataforma.
+5. O pedido segue para o WhatsApp com uma mensagem já estruturada para agilizar o atendimento.
 
-## Funcionalidades
+Link do projeto: [Adicionar URL de produção aqui](#)
 
-### Área administrativa
-
-- Login administrativo com validação de perfil `role = 'admin'`
-- Dashboard com métricas principais
-- Cadastro e exclusão de clientes
-- Registro de compras e crédito de pontos
-- Resgate assistido de recompensas
-- Gestão de tamanhos de açaí:
-  - criar, editar, excluir
-  - ativar/desativar
-  - reordenar prioridade
+## Funcionalidades principais
 
 ### Área do cliente
 
-- Login com e-mail e senha
-- Cadastro de nova conta (com vínculo por telefone/e-mail)
-- Recuperação de senha via e-mail (`/update-password`)
-- Visualização de saldo de pontos
-- Histórico de compras
-- Histórico de resgates
-- Resgate com opções de tamanho e adicionais
-- Abertura de conversa no WhatsApp com mensagem pré-montada
+- Cadastro e login com e-mail e senha.
+- Recuperação de senha com fluxo seguro via Supabase Auth.
+- Vínculo entre conta autenticada e cadastro existente por telefone ou e-mail.
+- Consulta de saldo de pontos em tempo real.
+- Histórico de compras registradas no programa.
+- Histórico de resgates realizados.
+- Resgate de recompensas com seleção de opções e adicionais.
+- Redirecionamento para o WhatsApp com mensagem automática para concluir o pedido.
 
-## Stack e arquitetura
+### Área administrativa
 
-### Tecnologias
+- Login administrativo com controle de acesso por perfil.
+- Painel para visualização e gestão da base de clientes.
+- Cadastro manual de clientes pelo administrador, inclusive em formato de pré-cadastro.
+- Registro de novas compras com crédito automático de pontos.
+- Gestão de resgates diretamente pelo painel interno.
+- Exclusão de clientes e atualização da base com feedback visual.
+- Gestão de tamanhos e opções de recompensa.
 
-- React 19
-- Vite 8
-- React Router 7
-- Tailwind CSS 4
-- Supabase JS 2
-- ESLint 9
+### Regras de fidelidade
 
-### Estrutura de pastas
+- Sistema de pontos baseado em consumo.
+- Na implementação atual, a regra aplicada é simples e objetiva: cada R$ 1 em compra gera 1 ponto.
+- A lógica foi estruturada para permitir adaptações futuras, incluindo regras equivalentes por volume ou produto, como cenários do tipo 300 ml = 300 pontos.
+- Resgates podem representar recompensas como açaí grátis, com controle de custo em pontos e histórico da operação.
+
+### Segurança e autenticação
+
+- Autenticação segura com Supabase Auth.
+- Rotas protegidas para cliente e administrador.
+- Políticas de acesso no banco com RLS.
+- Separação de perfis administrativos e clientes.
+- Persistência de sessão e recuperação de senha integradas ao fluxo da aplicação.
+
+## Diferenciais do projeto
+
+- Projeto aplicado a um negócio físico real, com foco em operação do dia a dia e retenção de clientes.
+- Integração completa entre front-end e back-end, sem depender de soluções terceiras improvisadas.
+- Estrutura pensada para evolução futura como produto escalável e potencial SaaS.
+- Interface moderna, responsiva e com suporte a tema claro e escuro.
+- Experiência do usuário otimizada para reduzir atrito no login, consulta de pontos e resgate.
+- Integração com WhatsApp como ponte direta entre fidelidade e conversão de pedido.
+
+## Tecnologias utilizadas
+
+### Front-end
+
+- React
+- JavaScript
+- CSS
+- Vite
+- React Router
+
+### Back-end e serviços
+
+- Supabase Auth
+- Supabase Database
+- Supabase Storage
+
+### Qualidade e organização
+
+- ESLint
+- Estrutura modular por componentes, páginas, hooks e serviços
+- Interface com suporte a tema claro/escuro
+
+## Estrutura do projeto
 
 ```text
 src/
-  assets/
   components/
-    admin/
-    auth/
-    client/
-    ui/
+  pages/
+  hooks/
+  services/
   constants/
   data/
-  hooks/
   lib/
-  pages/
-  services/
   utils/
+  assets/
 supabase/
+public/
 ```
 
-### Organização por camadas
+### Pastas principais
 
-- `pages`: composição das telas e fluxos principais
-- `components`: UI reutilizável por domínio
-- `services`: acesso a dados e regras de integração Supabase
-- `hooks`: gerenciamento de sessão e estados transversais
-- `utils`: formatação, tratamento de erro e utilitários de domínio
+- src/: núcleo da aplicação front-end.
+- components/: componentes reutilizáveis da interface, incluindo módulos de cliente, autenticação, administração e UI.
+- pages/: telas principais da aplicação, como login, portal do cliente, painel admin e redefinição de senha.
+- hooks/: hooks customizados para autenticação, tema e estados compartilhados.
+- services/: camada responsável pela comunicação com Supabase e pelas regras de negócio.
 
-## Rotas da aplicação
+## Como rodar localmente
 
-- `/` -> redireciona para `/login`
-- `/login` -> login/cadastro de cliente
-- `/cliente` -> portal do cliente (protegido)
-- `/update-password` -> redefinição de senha do cliente
-- `/admin` -> login administrativo
-- `/admin/dashboard` -> portal administrativo (protegido)
-- `/admin/tamanhos` -> gestão de tamanhos de recompensa (protegido)
+### 1. Clonar o repositório
 
-## Pré-requisitos
+```bash
+git clone <url-do-repositorio>
+cd projeto-araras
+```
 
-- Node.js 20+
-- npm 10+
-- Projeto Supabase ativo
-
-## Configuração local
-
-1. Instale as dependências:
+### 2. Instalar as dependências
 
 ```bash
 npm install
 ```
 
-2. Configure variáveis de ambiente criando `.env.local`:
+### 3. Configurar as variáveis de ambiente
+
+Crie um arquivo chamado `.env.local` na raiz do projeto e adicione as credenciais do seu projeto Supabase.
 
 ```env
-VITE_SUPABASE_URL=https://SEU-PROJETO.supabase.co
-VITE_SUPABASE_ANON_KEY=SEU_SUPABASE_ANON_KEY
+VITE_SUPABASE_URL=https://seu-projeto.supabase.co
+VITE_SUPABASE_ANON_KEY=sua-chave-publica-do-supabase
 ```
 
-3. Inicie o projeto em desenvolvimento:
+### 4. Rodar o projeto
 
 ```bash
 npm run dev
 ```
 
-4. Acesse a aplicação no endereço exibido pelo Vite (padrão: `http://localhost:5173`).
+### 5. Acessar no navegador
+
+Por padrão, o Vite disponibiliza a aplicação em:
+
+```text
+http://localhost:5173
+```
+
+## Variáveis de ambiente
+
+Exemplo de configuração:
+
+```env
+VITE_SUPABASE_URL=https://seu-projeto.supabase.co
+VITE_SUPABASE_ANON_KEY=sua-chave-publica-do-supabase
+```
+
+Descrição das variáveis:
+
+- VITE_SUPABASE_URL: URL da instância do projeto no Supabase.
+- VITE_SUPABASE_ANON_KEY: chave pública utilizada pela aplicação cliente para autenticação e acesso controlado.
 
 ## Configuração do Supabase
 
-### 1) Executar scripts SQL
+O repositório já possui uma pasta supabase/ com scripts SQL para criação da estrutura, ajustes de schema e regras de acesso.
 
-Na pasta `supabase/` existem scripts de estrutura e ajustes. Ordem sugerida de aplicação em ambiente novo:
+Ordem recomendada para um ambiente novo:
 
-1. `schema.sql`
-2. `add-phone-digits-migration.sql`
-3. `reward-options.sql`
-4. `toppings-setup.sql`
-5. `reward-sizes-migration.sql`
-6. `client-area-rls.sql`
-7. `claim-client-by-phone-rpc.sql`
-8. `admin-delete-clients-policy.sql`
+1. schema.sql
+2. add-phone-digits-migration.sql
+3. reward-options.sql
+4. toppings-setup.sql
+5. reward-sizes-migration.sql
+6. client-area-rls.sql
+7. claim-client-by-phone-rpc.sql
+8. admin-delete-clients-policy.sql
 
-Scripts de manutenção/correção pontual (executar apenas quando necessário):
+Arquivos auxiliares de manutenção:
 
-- `repair-cloud-schema.sql`
-- `verify-micaella-link.sql`
+- repair-cloud-schema.sql
+- verify-micaella-link.sql
 
-### 2) Criar usuários admin
-
-No painel do Supabase:
-
-1. Vá em Authentication -> Users
-2. Crie o usuário administrador
-3. Garanta registro correspondente em `profiles` com `role = 'admin'`
-
-### 3) Tabelas principais utilizadas
-
-- `profiles`
-- `clients`
-- `purchases`
-- `reward_redemptions`
-- `reward_options`
-- `reward_sizes`
-- `toppings`
+Também é necessário garantir que o usuário administrador tenha um registro compatível com perfil de admin no banco para acesso ao painel interno.
 
 ## Scripts disponíveis
 
-- `npm run dev` -> inicia ambiente local
-- `npm run build` -> gera build de produção
-- `npm run preview` -> pré-visualiza build local
-- `npm run lint` -> executa verificação de lint
-
-## Deploy
-
-### Vercel
-
-O projeto já possui `vercel.json` com rewrite SPA:
-
-```json
-{
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
-  ]
-}
+```bash
+npm run dev
+npm run build
+npm run preview
+npm run lint
 ```
 
-Checklist para produção:
+- npm run dev: inicia o ambiente de desenvolvimento.
+- npm run build: gera a build de produção.
+- npm run preview: executa uma visualização local da build.
+- npm run lint: valida o código com ESLint.
 
-1. Configurar `VITE_SUPABASE_URL` e `VITE_SUPABASE_ANON_KEY` no ambiente da Vercel
-2. Garantir execução das migrações no Supabase de produção
-3. Revisar políticas RLS antes de abrir acesso público
+## Melhorias futuras
 
-## Segurança
+- Dashboard com métricas mais avançadas de retenção, recompra e ticket médio.
+- Plano premium para empresas que desejarem usar o sistema como serviço.
+- Notificações automáticas para campanhas, saldo de pontos e recompensas disponíveis.
+- Estrutura multi-loja para operação em mais de uma unidade.
+- Aplicativo mobile para clientes e operação interna.
 
-Medidas já implementadas:
+## Autor
 
-- Sessão via Supabase Auth
-- Rotas protegidas para admin e cliente
-- Validação de permissão administrativa em `profiles`
-- RLS habilitado nas tabelas de domínio
-- Logout limpando sessão local/global
+**Giovanne Medeiros**
 
-Reforços recomendados para evolução:
-
-1. Transações críticas em RPC/Edge Functions com controle atômico
-2. Rate limit para endpoints sensíveis de autenticação/consulta
-3. Monitoramento de erros e trilha de auditoria para ações administrativas
-
-## Troubleshooting
-
-### Erro de Supabase não configurado
-
-- Verifique `VITE_SUPABASE_URL` e `VITE_SUPABASE_ANON_KEY` em `.env.local`
-- Reinicie o servidor de desenvolvimento
-
-### Erro relacionado a `phone_digits`
-
-- Execute `add-phone-digits-migration.sql`
-- Revalide constraints de telefone único
-
-### Falha ao vincular cliente por telefone
-
-- Confira se a RPC `claim_client_by_phone` foi criada
-- Aplique `claim-client-by-phone-rpc.sql`
-- Revise permissões RLS para a operação
-
-### Login admin sem permissão
-
-- Confirme se o usuário existe em `profiles` com `role = 'admin'`
-- Verifique se o `id` do profile corresponde ao `auth.users.id`
-
-## Roadmap recomendado
-
-1. Testes automatizados (unitários + integração)
-2. Logs estruturados e observabilidade
-3. Fluxo de auditoria para ações sensíveis
-4. Versionamento formal de migrações por ambiente
+LinkedIn: [Adicionar link do LinkedIn aqui](#)
 
 ---
 
-Se quiser, posso também gerar uma versão curta do README para vitrine de portfólio (mais focada em resultado de negócio e screenshots) mantendo esta como documentação técnica principal.
+Este projeto representa uma aplicação real com foco em produto, operação e experiência do usuário. É um case consistente para portfólio profissional por unir interface, autenticação, regras de negócio, integração com banco de dados e uso prático em um cenário comercial.
