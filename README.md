@@ -28,7 +28,7 @@ O Arara's Açaí - Sistema de Fidelidade organiza toda a jornada do cliente dent
 4. Quando houver pontos suficientes, o resgate pode ser feito pela plataforma.
 5. O pedido segue para o WhatsApp com uma mensagem já estruturada para agilizar o atendimento.
 
-Link do projeto: [[Adicionar URL de produção aqui](#)](https://araras-acai.vercel.app/login)
+Link do projeto: (https://araras-acai.vercel.app/login)
 
 ## 📸 Demonstração
 
