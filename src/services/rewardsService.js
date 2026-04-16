@@ -229,6 +229,16 @@ function throwRedemptionPersistenceError(error) {
   throw new Error(error?.message || "Falha ao registrar resgate.")
 }
 
+function isClientOwnedRedemptionDenied(error) {
+  const message = String(error?.message || "").toLowerCase()
+  return (
+    message.includes("você não tem permissão") ||
+    message.includes("voce nao tem permissao") ||
+    message.includes("cliente não encontrado") ||
+    message.includes("cliente nao encontrado")
+  )
+}
+
 async function insertRedemptionWithFallback({
   clientId,
   rewardCost,
@@ -295,23 +305,70 @@ export async function redeemClientReward({
 }) {
   assertSupabaseConfigured()
 
+  if (clientId === null || clientId === undefined || String(clientId).trim() === "") {
+    throw new Error("ID do cliente inválido para resgate.")
+  }
+
+  const normalizedClientId = clientId
+  const numericClientId = Number(normalizedClientId)
+  const canUseSecureRpc = Number.isInteger(numericClientId) && numericClientId > 0
+
   const rewardCost = parseRewardCost(cost)
   const extrasTotal = Number(additionalTotal || 0)
-  const client = await getClientByIdWithDetails(clientId)
-  const currentPoints = getEffectiveClientPoints(client)
+  const client = await getClientByIdWithDetails(normalizedClientId)
 
   if (!client) throw new Error("Cliente nao encontrado para resgate.")
+  const currentPoints = getEffectiveClientPoints(client)
   if (currentPoints < rewardCost) {
     throw new Error(
       `Pontos insuficientes para resgatar recompensa. Saldo atual: ${currentPoints} / Necessario: ${rewardCost}.`
     )
   }
 
+  const addonLabels = addons.map((addon) => String(addon || "").trim()).filter(Boolean)
+
+  let secureRedemption = null
+  let secureRedemptionError = null
+
+  if (canUseSecureRpc) {
+    const rpcResult = await supabase.rpc("redeem_own_reward", {
+      p_client_id: numericClientId,
+      p_cost: rewardCost,
+      p_label: label,
+      p_addons: addonLabels,
+      p_additional_total: extrasTotal,
+    })
+
+    secureRedemption = rpcResult.data
+    secureRedemptionError = rpcResult.error
+  }
+
+  if (!secureRedemptionError && secureRedemption) {
+    return {
+      clientName: secureRedemption.client_name || client.name,
+      remainingPoints: Number(secureRedemption.remaining_points || 0),
+    }
+  }
+
+  const secureMessage = String(secureRedemptionError?.message || "").toLowerCase()
+  if (
+    secureMessage.includes("redeem_own_reward") &&
+    secureMessage.includes("does not exist")
+  ) {
+    throw new Error(
+      "Função RPC redeem_own_reward não encontrada no banco. Execute o SQL de segurança do resgate e tente novamente."
+    )
+  }
+
+  if (secureRedemptionError && !isClientOwnedRedemptionDenied(secureRedemptionError)) {
+    throw new Error(secureRedemptionError.message || "Falha ao registrar resgate.")
+  }
+
   await insertRedemptionWithFallback({
     clientId,
     rewardCost,
     label,
-    addons,
+    addons: addonLabels,
     extrasTotal,
   })
 

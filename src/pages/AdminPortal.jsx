@@ -53,6 +53,7 @@ function AdminPortal() {
     rewardOptions.length > 0
       ? Math.min(...rewardOptions.map((option) => option.points))
       : REWARD_COST
+  const nearRewardThreshold = Math.max(3, Math.min(10, Math.ceil(activeRewardCost * 0.2)))
 
   async function fetchClients() {
     const data = await listClientsWithDetails()
@@ -285,7 +286,7 @@ function AdminPortal() {
       .slice(0, 5)
 
     const nearlyReward = clients.filter(
-      (client) => client.points < activeRewardCost && activeRewardCost - client.points <= 3
+      (client) => client.points < activeRewardCost && activeRewardCost - client.points <= nearRewardThreshold
     )
 
     return {
@@ -299,7 +300,7 @@ function AdminPortal() {
       totalRedeemedRewards,
       nearlyReward,
     }
-  }, [activeRewardCost, clients, redemptionsMetrics])
+  }, [activeRewardCost, clients, nearRewardThreshold, redemptionsMetrics])
 
   const urgentClients = summary.nearlyReward.slice(0, 3)
 
@@ -492,7 +493,7 @@ function AdminPortal() {
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <h3 className={`text-lg font-bold ${isDark ? "text-[#EDE7FA]" : "text-[#2B2B2B]"}`}>Clientes próximos da recompensa</h3>
                 <span className={`rounded-full px-3 py-1 text-sm ${isDark ? "border border-[#4D3A72] bg-[#2E2444] text-[#D4C8F0]" : "bg-[#E8D8C3] text-[#6B4E2E]"}`}>
-                  até 3 pts
+                  até {nearRewardThreshold} pts
                 </span>
               </div>
 
@@ -525,6 +526,7 @@ function AdminPortal() {
               <ClientList
                 clients={clients}
                 rewardCost={activeRewardCost}
+                nearThreshold={nearRewardThreshold}
                 onRedeemReward={handleOpenRedeem}
                 onDeleteClient={handleRequestDeleteClient}
                 isDark={isDark}

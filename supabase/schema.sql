@@ -34,23 +34,37 @@ alter table public.clients enable row level security;
 alter table public.purchases enable row level security;
 alter table public.reward_redemptions enable row level security;
 
-create policy if not exists "client_read_clients" on public.clients
-for select to authenticated using (true);
+drop policy if exists "admin_select_clients" on public.clients;
+create policy "admin_select_clients" on public.clients
+for select to authenticated using (exists (
+  select 1 from public.profiles p
+  where p.id = auth.uid() and lower(coalesce(p.role, '')) = 'admin'
+));
 
-create policy if not exists "client_read_purchases" on public.purchases
-for select to authenticated using (true);
+drop policy if exists "admin_select_purchases" on public.purchases;
+create policy "admin_select_purchases" on public.purchases
+for select to authenticated using (exists (
+  select 1 from public.profiles p
+  where p.id = auth.uid() and lower(coalesce(p.role, '')) = 'admin'
+));
 
-create policy if not exists "client_read_redemptions" on public.reward_redemptions
-for select to authenticated using (true);
+drop policy if exists "admin_select_redemptions" on public.reward_redemptions;
+create policy "admin_select_redemptions" on public.reward_redemptions
+for select to authenticated using (exists (
+  select 1 from public.profiles p
+  where p.id = auth.uid() and lower(coalesce(p.role, '')) = 'admin'
+));
 
-create policy if not exists "admin_insert_clients" on public.clients
+drop policy if exists "admin_insert_clients" on public.clients;
+create policy "admin_insert_clients" on public.clients
 for insert to authenticated
 with check (exists (
   select 1 from public.profiles p
   where p.id = auth.uid() and lower(coalesce(p.role, '')) = 'admin'
 ));
 
-create policy if not exists "admin_update_clients" on public.clients
+drop policy if exists "admin_update_clients" on public.clients;
+create policy "admin_update_clients" on public.clients
 for update to authenticated
 using (exists (
   select 1 from public.profiles p
@@ -61,14 +75,16 @@ with check (exists (
   where p.id = auth.uid() and lower(coalesce(p.role, '')) = 'admin'
 ));
 
-create policy if not exists "admin_insert_purchases" on public.purchases
+drop policy if exists "admin_insert_purchases" on public.purchases;
+create policy "admin_insert_purchases" on public.purchases
 for insert to authenticated
 with check (exists (
   select 1 from public.profiles p
   where p.id = auth.uid() and lower(coalesce(p.role, '')) = 'admin'
 ));
 
-create policy if not exists "admin_insert_redemptions" on public.reward_redemptions
+drop policy if exists "admin_insert_redemptions" on public.reward_redemptions;
+create policy "admin_insert_redemptions" on public.reward_redemptions
 for insert to authenticated
 with check (exists (
   select 1 from public.profiles p

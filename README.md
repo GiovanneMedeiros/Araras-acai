@@ -207,7 +207,11 @@ Ordem recomendada para um ambiente novo:
 5. reward-sizes-migration.sql
 6. client-area-rls.sql
 7. claim-client-by-phone-rpc.sql
-8. admin-delete-clients-policy.sql
+8. secure-client-redemption-rpc.sql
+9. admin-delete-clients-policy.sql
+
+Observação de segurança:
+O vínculo automático por telefone agora só é permitido quando o pré-cadastro já possui o mesmo e-mail do usuário autenticado. Pré-cadastros criados apenas com telefone exigem liberação manual da loja até existir um fluxo de prova de posse do número, como OTP.
 
 Arquivos auxiliares de manutenção:
 

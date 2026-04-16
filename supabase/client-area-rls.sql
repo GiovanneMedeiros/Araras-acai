@@ -23,7 +23,8 @@ drop policy if exists "client_read_purchases" on public.purchases;
 drop policy if exists "client_read_redemptions" on public.reward_redemptions;
 
 -- Recria politicas administrativas
-create policy if not exists "admin_insert_clients" on public.clients
+drop policy if exists "admin_insert_clients" on public.clients;
+create policy "admin_insert_clients" on public.clients
 for insert to authenticated
 with check (
   exists (
@@ -34,7 +35,8 @@ with check (
   )
 );
 
-create policy if not exists "admin_update_clients" on public.clients
+drop policy if exists "admin_update_clients" on public.clients;
+create policy "admin_update_clients" on public.clients
 for update to authenticated
 using (
   exists (
@@ -53,7 +55,8 @@ with check (
   )
 );
 
-create policy if not exists "admin_insert_purchases" on public.purchases
+drop policy if exists "admin_insert_purchases" on public.purchases;
+create policy "admin_insert_purchases" on public.purchases
 for insert to authenticated
 with check (
   exists (
@@ -64,7 +67,8 @@ with check (
   )
 );
 
-create policy if not exists "admin_insert_redemptions" on public.reward_redemptions
+drop policy if exists "admin_insert_redemptions" on public.reward_redemptions;
+create policy "admin_insert_redemptions" on public.reward_redemptions
 for insert to authenticated
 with check (
   exists (
@@ -76,7 +80,8 @@ with check (
 );
 
 -- Leitura: admin ve tudo; cliente ve somente o proprio registro
-create policy if not exists "client_select_own_or_admin_clients" on public.clients
+drop policy if exists "client_select_own_or_admin_clients" on public.clients;
+create policy "client_select_own_or_admin_clients" on public.clients
 for select to authenticated
 using (
   auth_user_id = auth.uid()
@@ -90,10 +95,13 @@ using (
 
 -- Permite vinculo inicial do cliente autenticado ao proprio cadastro por e-mail
 drop policy if exists "client_link_own_email_clients" on public.clients;
+drop policy if exists "client_update_own_clients" on public.clients;
+drop policy if exists "client_insert_own_redemptions" on public.reward_redemptions;
 
 -- Permite vinculo inicial por e-mail (quando pre-cadastro ja tem e-mail)
 -- ou por telefone (quando pre-cadastro foi criado sem e-mail no admin).
-create policy if not exists "client_link_own_email_or_phone_clients" on public.clients
+drop policy if exists "client_link_own_email_or_phone_clients" on public.clients;
+create policy "client_link_own_email_or_phone_clients" on public.clients
 for update to authenticated
 using (
   auth_user_id is null
@@ -120,14 +128,9 @@ with check (
   )
 );
 
--- Permite atualizar o proprio registro (necessario para fluxo atual de pontos no cliente)
-create policy if not exists "client_update_own_clients" on public.clients
-for update to authenticated
-using (auth_user_id = auth.uid())
-with check (auth_user_id = auth.uid());
-
 -- Compras: cliente ve apenas compras do proprio cadastro; admin ve tudo
-create policy if not exists "client_select_own_or_admin_purchases" on public.purchases
+drop policy if exists "client_select_own_or_admin_purchases" on public.purchases;
+create policy "client_select_own_or_admin_purchases" on public.purchases
 for select to authenticated
 using (
   exists (
@@ -147,7 +150,8 @@ using (
 );
 
 -- Resgates: cliente ve apenas os proprios; admin ve tudo
-create policy if not exists "client_select_own_or_admin_redemptions" on public.reward_redemptions
+drop policy if exists "client_select_own_or_admin_redemptions" on public.reward_redemptions;
+create policy "client_select_own_or_admin_redemptions" on public.reward_redemptions
 for select to authenticated
 using (
   exists (
@@ -166,14 +170,4 @@ using (
   )
 );
 
--- Resgate no app do cliente (fluxo atual): permitir insert apenas para o proprio client_id
-create policy if not exists "client_insert_own_redemptions" on public.reward_redemptions
-for insert to authenticated
-with check (
-  exists (
-    select 1
-    from public.clients c
-    where c.id = public.reward_redemptions.client_id
-      and c.auth_user_id = auth.uid()
-  )
-);
+-- O resgate do cliente deve ocorrer exclusivamente pela RPC segura redeem_own_reward.

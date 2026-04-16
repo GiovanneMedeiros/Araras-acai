@@ -229,6 +229,16 @@ async function claimClientByPhone({ phone, email, fullName }) {
       throw new Error("Este telefone já está vinculado a outra conta")
     }
 
+    if (message.includes("pré-cadastro") || message.includes("pre-cadastro")) {
+      throw new Error(
+        "Já existe um pré-cadastro com este telefone sem e-mail validado. Solicite à loja a liberação manual do acesso."
+      )
+    }
+
+    if (message.includes("pertence a outro cadastro")) {
+      throw new Error("O telefone informado pertence a outro cadastro")
+    }
+
     if (message.includes("claim_client_by_phone") && message.includes("does not exist")) {
       throw new Error("Função RPC claim_client_by_phone não encontrada no banco. Execute o SQL da função e tente novamente.")
     }
@@ -271,12 +281,15 @@ function mapRedemptionRow(row) {
 }
 
 async function loadPurchasesByClientIds(clientIds) {
-  if (!clientIds.length) return []
+  const safeClientIds = clientIds.filter(
+    (id) => id !== null && id !== undefined && !(typeof id === "number" && Number.isNaN(id))
+  )
+  if (!safeClientIds.length) return []
 
   const { data, error } = await supabase
     .from(PURCHASES_TABLE)
     .select("id, client_id, value, amount, points, points_earned, purchased_at, created_at")
-    .in("client_id", clientIds)
+    .in("client_id", safeClientIds)
     .order("purchased_at", { ascending: false })
 
   if (error) throw new Error(error.message || "Erro ao buscar compras.")
@@ -284,12 +297,15 @@ async function loadPurchasesByClientIds(clientIds) {
 }
 
 async function loadRedemptionsByClientIds(clientIds) {
-  if (!clientIds.length) return []
+  const safeClientIds = clientIds.filter(
+    (id) => id !== null && id !== undefined && !(typeof id === "number" && Number.isNaN(id))
+  )
+  if (!safeClientIds.length) return []
 
   const modernQuery = await supabase
     .from(REDEMPTIONS_TABLE)
     .select("id, client_id, cost, label, addons, additional_total, redeemed_at, created_at")
-    .in("client_id", clientIds)
+    .in("client_id", safeClientIds)
     .order("redeemed_at", { ascending: false })
 
   if (!modernQuery.error) return modernQuery.data || []
@@ -304,7 +320,7 @@ async function loadRedemptionsByClientIds(clientIds) {
   const legacyQuery = await supabase
     .from(REDEMPTIONS_TABLE)
     .select("id, client_id, points_used, reward_name, addons, additional_total, redeemed_at, created_at")
-    .in("client_id", clientIds)
+    .in("client_id", safeClientIds)
     .order("redeemed_at", { ascending: false })
 
   if (legacyQuery.error) {
@@ -776,7 +792,9 @@ export async function createOrLinkClientWithEmail({ name, phone, email, password
         }
       }
 
-      throw new Error("Este telefone já está vinculado a outra conta")
+      throw new Error(
+        "Já existe um cadastro com este telefone. Se ele foi criado sem e-mail, a loja precisa liberar o vínculo manualmente."
+      )
     }
 
     throw new Error(

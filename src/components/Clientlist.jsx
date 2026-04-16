@@ -1,7 +1,14 @@
 import { useMemo, useState } from "react"
 import { formatCurrency, formatDate, normalizeText } from "../utils/format.js"
 
-function ClientList({ clients, onRedeemReward, onDeleteClient, rewardCost, isDark = false }) {
+function ClientList({
+  clients,
+  onRedeemReward,
+  onDeleteClient,
+  rewardCost,
+  nearThreshold = 3,
+  isDark = false,
+}) {
   const [search, setSearch] = useState("")
   const [filter, setFilter] = useState("all")
 
@@ -18,11 +25,11 @@ function ClientList({ clients, onRedeemReward, onDeleteClient, rewardCost, isDar
 
       if (filter === "redeemable") return client.points >= rewardCost
       if (filter === "near")
-        return client.points < rewardCost && rewardCost - client.points <= 3
+        return client.points < rewardCost && rewardCost - client.points <= nearThreshold
 
       return true
     })
-  }, [clients, filter, rewardCost, search])
+  }, [clients, filter, nearThreshold, rewardCost, search])
 
   const filters = [
     { id: "all", label: "Todos" },
@@ -87,7 +94,7 @@ function ClientList({ clients, onRedeemReward, onDeleteClient, rewardCost, isDar
           const progress = Math.min((client.points / rewardCost) * 100, 100)
           const canRedeem = client.points >= rewardCost
           const pointsToReward = Math.max(rewardCost - client.points, 0)
-          const nearReward = pointsToReward > 0 && pointsToReward <= 3
+          const nearReward = pointsToReward > 0 && pointsToReward <= nearThreshold
           const isVip = client.points >= rewardCost * 2
 
           return (

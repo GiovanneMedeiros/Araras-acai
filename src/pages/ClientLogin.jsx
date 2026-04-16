@@ -223,6 +223,24 @@ function ClientLogin() {
         return
       }
 
+      if (message.includes("pré-cadastro") || message.includes("pre-cadastro")) {
+        pushToast(
+          "Liberação manual necessária",
+          "Seu telefone já existe em um pré-cadastro sem e-mail validado. Peça para a loja liberar o vínculo antes de criar o acesso.",
+          "warning"
+        )
+        return
+      }
+
+      if (message.includes("pertence a outro cadastro")) {
+        pushToast(
+          "Telefone não confere",
+          "O telefone informado já está associado a outro cadastro. Revise os dados ou fale com a loja.",
+          "error"
+        )
+        return
+      }
+
       if (
         message.includes("already registered") ||
         message.includes("already exists") ||
